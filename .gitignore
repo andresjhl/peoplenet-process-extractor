@@ -32,3 +32,6 @@ Thumbs.db
 *.log
 tmp/
 output/
+
+# Local Claude Code configuration
+.claude/

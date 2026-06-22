@@ -1,0 +1,13 @@
+{
+  "meta4object": "GLB_11_G_PA_PC_V1",
+  "nodo": "GLB_G_PA_PC",
+  "metodo": "GLB_M_PC_EXE(\"STEP_SAVE\")",
+  "proceso": "11_JORN_STORE_U",
+  "inputs": {
+    "P_ID_FLUJO": "DIFFERENT_PROCESS_ID"
+  },
+  "propiedades": [],
+  "flags": {},
+  "metodos": [],
+  "notas": []
+}
