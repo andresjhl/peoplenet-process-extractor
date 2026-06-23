@@ -261,7 +261,7 @@ def _write_atomic(text: str, dest: Path) -> None:
     try:
         fd, tmp = tempfile.mkstemp(dir=dest.parent, suffix=".tmp")
         os.close(fd)
-        Path(tmp).write_text(text, encoding="utf-8")
+        Path(tmp).write_bytes(text.encode("utf-8"))
         Path(tmp).replace(dest)
         tmp = None
     finally:

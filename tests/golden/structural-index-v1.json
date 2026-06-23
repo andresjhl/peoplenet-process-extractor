@@ -1,13 +1,13 @@
 {
-  "_note": "Generated from a non-git copy of the fixture corpus so all fields are deterministic. Excluded: corpus_git_commit, corpus_git_dirty (depend on the environment). Included: generator_version (excluded from golden comparison — varies by install), index_created_at (deterministic via FIXED_NOW), corpus_manifest_sha256/size_bytes (fixed for static fixture), source_files.id (stable, assigned in ascending path order), warnings as {sequence, message} objects. id=2 (METH_W.ln4) has one real warning from path parsing.",
+  "_note": "Generated from a non-git copy of the fixture corpus so all fields are deterministic. Fixture text files (*.ln4, *.json) are enforced as LF via .gitattributes; the manifest serializer always writes UTF-8 LF bytes. Excluded: corpus_git_commit, corpus_git_dirty (depend on the environment). Included: generator_version (excluded from golden comparison — varies by install), index_created_at (deterministic via FIXED_NOW), corpus_manifest_sha256/size_bytes (canonical LF manifest, stable across platforms), source_files.id (stable, assigned in ascending path order), warnings as {sequence, message} objects. id=2 (METH_W.ln4) has one real warning from path parsing.",
   "metadata": {
     "index_format": "structural-index-v1",
     "schema_version": 1,
     "generator_name": "peoplenet-process-extractor",
     "generator_version": "0.1.0",
     "corpus_id": "index-corpus",
-    "corpus_manifest_sha256": "1502ab8c5b41a2289767833290883e8c2ced0aefd060ac75beaf64fef68ee125",
-    "corpus_manifest_size_bytes": 4053,
+    "corpus_manifest_sha256": "741bfe71df4bb51811e6dce20fe8e0381034342585c2712c3f7e52037fca3e9f",
+    "corpus_manifest_size_bytes": 3912,
     "corpus_created_at": "2026-06-23T12:00:00+00:00",
     "index_created_at": "2026-06-23T12:00:00+00:00",
     "total_files": 7,
