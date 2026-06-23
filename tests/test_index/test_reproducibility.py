@@ -17,6 +17,9 @@ GOLDEN_PATH = Path(__file__).parent.parent / "golden" / "structural-index-v1.jso
 # Path of the fixture file that carries a real warning (malformed rule name).
 _WARNING_PATH = "CP/NODE STRUCTURE/OBJ_A/ITEM/METHOD/METH_W/RULES/METH_W.ln4"
 
+# Extensions whose on-disk bytes affect the corpus manifest hash.
+_TEXT_FIXTURE_EXTS = frozenset({".ln4", ".json"})
+
 
 def _build_non_git_index(tmp_path: Path) -> tuple[Path, Path]:
     """
@@ -77,6 +80,104 @@ class TestLogicalReproducibility:
         elements = logical_export(db)["structural_elements"]
         keys = [(e["meta4object"], e["item_type"], e["item_name"]) for e in elements]
         assert keys == sorted(keys)
+
+
+class TestManifestSerializationCanonical:
+    """
+    Verify that the corpus manifest is byte-identical across platforms.
+
+    Root cause that prompted these tests: _write_atomic used write_text() without
+    an explicit newline= argument, causing \r\n on Windows.  Together with
+    core.autocrlf=true converting fixture .ln4/.json files to CRLF on checkout,
+    the corpus_manifest_sha256 differed between Linux and Windows despite the
+    same logical content.  These tests guard against both regressions.
+    """
+
+    def test_fixture_text_files_have_lf_line_endings(self):
+        """All fixture text files must use LF, not CRLF.
+
+        Enforced by .gitattributes (eol=lf).  This test catches any case where
+        git autocrlf or a text editor re-introduces CRLF bytes on checkout.
+        """
+        for path in sorted(FIXTURE_CORPUS.rglob("*")):
+            if path.is_file() and path.suffix in _TEXT_FIXTURE_EXTS:
+                raw = path.read_bytes()
+                assert b"\r\n" not in raw, (
+                    f"Fixture {path.name!r} has CRLF bytes; "
+                    "check .gitattributes eol=lf for tests/fixtures/index_corpus"
+                )
+
+    def test_manifest_uses_lf_line_endings(self, tmp_path):
+        """The serialized manifest must never contain \\r\\n, regardless of OS."""
+        manifest, _ = _build_non_git_index(tmp_path)
+        raw = manifest.read_bytes()
+        assert b"\r\n" not in raw, "Manifest serializer produced CRLF bytes; use write_bytes or newline='\\n'"
+
+    def test_two_manifest_builds_are_byte_identical(self, tmp_path):
+        """Two create_inventory calls on identical corpora must produce the same bytes.
+
+        Both corpus copies share the same basename so that root.label (derived from
+        corpus_root.name) is identical and doesn't introduce a spurious diff.
+        """
+        corpus_a = tmp_path / "run_a" / "non_git_corpus"
+        shutil.copytree(FIXTURE_CORPUS, corpus_a)
+        manifest_a = tmp_path / "manifest_a.json"
+        code, msgs = create_inventory(
+            corpus_root=corpus_a, output_path=manifest_a, corpus_id="test", now=FIXED_NOW
+        )
+        assert code == 0, msgs
+
+        corpus_b = tmp_path / "run_b" / "non_git_corpus"
+        shutil.copytree(FIXTURE_CORPUS, corpus_b)
+        manifest_b = tmp_path / "manifest_b.json"
+        code, msgs = create_inventory(
+            corpus_root=corpus_b, output_path=manifest_b, corpus_id="test", now=FIXED_NOW
+        )
+        assert code == 0, msgs
+
+        assert manifest_a.read_bytes() == manifest_b.read_bytes(), (
+            "Two corpus manifest builds from identical fixtures are not byte-identical"
+        )
+
+    def test_manifest_sha256_stable_across_builds(self, tmp_path):
+        """corpus_manifest_sha256 must be the same in two consecutive index builds."""
+        manifest, db1 = _build_non_git_index(tmp_path)
+        exp1 = logical_export(db1)
+
+        db2 = tmp_path / "idx2.sqlite"
+        code, msgs = build_index(
+            corpus_root=tmp_path / "non_git_corpus",
+            manifest_path=manifest,
+            output_path=db2,
+            now=FIXED_NOW,
+        )
+        assert code == 0, msgs
+        exp2 = logical_export(db2)
+
+        assert exp1["metadata"]["corpus_manifest_sha256"] == exp2["metadata"]["corpus_manifest_sha256"]
+        assert exp1["metadata"]["corpus_manifest_size_bytes"] == exp2["metadata"]["corpus_manifest_size_bytes"]
+
+    def test_manifest_paths_use_forward_slashes(self, tmp_path):
+        """All file paths in the manifest must use '/' not '\\', regardless of OS."""
+        manifest, _ = _build_non_git_index(tmp_path)
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        for entry in data["files"]:
+            assert "\\" not in entry["path"], (
+                f"Backslash in manifest path {entry['path']!r}; "
+                "normalize_path must convert OS separators to '/'"
+            )
+
+    def test_golden_manifest_sha256_matches_lf_canonical(self, tmp_path):
+        """The golden must store the sha256 of the LF-canonical manifest, not a CRLF variant."""
+        golden = json.loads(GOLDEN_PATH.read_text())
+        manifest, _ = _build_non_git_index(tmp_path)
+        raw = manifest.read_bytes()
+        import hashlib
+        actual_sha = hashlib.sha256(raw).hexdigest()
+        assert golden["metadata"]["corpus_manifest_sha256"] == actual_sha, (
+            "Golden corpus_manifest_sha256 does not match the LF-canonical manifest SHA-256; "
+            "regenerate the golden after fixing EOL normalization"
+        )
 
 
 class TestGolden:
