@@ -1,0 +1,25 @@
+{
+  "meta4object": "GLB_11_G_PA_PC_V1",
+  "nodo": "GLB_G_PA_PC",
+  "metodo": "GLB_M_PC_EXE(\"STEP_SAVE\")",
+  "proceso": "11_JORN_STORE_U",
+  "inputs": {
+    "P_ID_FLUJO": "11_JORN_STORE_U",
+    "P_DATE": "2024-01-15",
+    "P_NUM_STORE": 42,
+    "P_ACTIVE": true
+  },
+  "propiedades": [
+    {"propiedad": "GLB_COND_HOR_SRZ", "input": "P_14"},
+    {"propiedad": "GLB_G_PA_STORE_DATE", "input": "P_DATE"}
+  ],
+  "flags": {
+    "GLB_CK_CAMB_EMPRESA": false,
+    "GLB_CK_HOR_SRZ": true
+  },
+  "metodos": ["GLB_M_PC_EXE", "GLB_M_PA_VAL_STORE"],
+  "notas": [
+    "Proceso de cambio de jornada para tienda.",
+    "El flag GLB_CK_HOR_SRZ se activa cuando hay horario serializado."
+  ]
+}

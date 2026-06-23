@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "11-jorn-store-u",
+  "process": {
+    "id": "11_JORN_STORE_U",
+    "source": "manual_derivation",
+    "status": "derived"
+  },
+  "entry_point": {
+    "meta4object": "GLB_11_G_PA_PC_V1",
+    "node": "GLB_G_PA_PC",
+    "method": "GLB_M_PC_EXE",
+    "arguments": [
+      "STEP_SAVE"
+    ]
+  },
+  "entry_inputs": [
+    {
+      "name": "P_ID_FLUJO",
+      "value": "11_JORN_STORE_U",
+      "type": "string",
+      "source": "frontend_call",
+      "status": "observed"
+    },
+    {
+      "name": "P_DATE",
+      "value": "2024-01-15",
+      "type": "string",
+      "source": "frontend_call",
+      "status": "observed"
+    },
+    {
+      "name": "P_NUM_STORE",
+      "value": 42,
+      "type": "integer",
+      "source": "frontend_call",
+      "status": "observed"
+    },
+    {
+      "name": "P_ACTIVE",
+      "value": true,
+      "type": "boolean",
+      "source": "frontend_call",
+      "status": "observed"
+    }
+  ],
+  "property_bindings": [
+    {
+      "property": "GLB_COND_HOR_SRZ",
+      "input": "P_14"
+    },
+    {
+      "property": "GLB_G_PA_STORE_DATE",
+      "input": "P_DATE"
+    }
+  ],
+  "runtime_values": [],
+  "flags": [
+    {
+      "name": "GLB_CK_CAMB_EMPRESA",
+      "value": false,
+      "type": "boolean",
+      "source": "manual_derivation",
+      "status": "derived"
+    },
+    {
+      "name": "GLB_CK_HOR_SRZ",
+      "value": true,
+      "type": "boolean",
+      "source": "manual_derivation",
+      "status": "derived"
+    }
+  ],
+  "configuration": [],
+  "analysis_scope": {
+    "methods": [
+      {
+        "name": "GLB_M_PC_EXE",
+        "source": "manual_derivation",
+        "status": "derived",
+        "reason": null
+      },
+      {
+        "name": "GLB_M_PA_VAL_STORE",
+        "source": "manual_derivation",
+        "status": "derived",
+        "reason": null
+      }
+    ]
+  },
+  "notes": [
+    "Proceso de cambio de jornada para tienda.",
+    "El flag GLB_CK_HOR_SRZ se activa cuando hay horario serializado."
+  ],
+  "source_files": {
+    "legacy_file": "tests/fixtures/scenarios/legacy_peoplenet_call.json",
+    "original_call": null,
+    "hash": null,
+    "source_type": "legacy_peoplenet_call"
+  }
+}
