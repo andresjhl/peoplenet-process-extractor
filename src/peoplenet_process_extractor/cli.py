@@ -2,6 +2,14 @@ import argparse
 import sys
 
 from .corpus.cli import cmd_corpus_inventory, cmd_corpus_verify, register_corpus_subparser
+from .index.cli import (
+    cmd_index_build,
+    cmd_index_query_elements,
+    cmd_index_query_files,
+    cmd_index_query_stats,
+    cmd_index_verify,
+    register_index_subparser,
+)
 from .manifest.cli import cmd_manifest_create, cmd_manifest_verify, register_manifest_subparser
 from .scenario.cli import cmd_migrate, register_migrate_subparser, register_scenario_subparser
 
@@ -21,6 +29,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     register_manifest_subparser(sub)
     register_corpus_subparser(sub)
+    register_index_subparser(sub)
     return parser
 
 
@@ -46,6 +55,19 @@ def main(argv: list[str] | None = None) -> int:
             return cmd_corpus_inventory(args)
         if args.corpus_command == "verify":
             return cmd_corpus_verify(args)
+
+    if args.command == "index":
+        if args.index_command == "build":
+            return cmd_index_build(args)
+        if args.index_command == "verify":
+            return cmd_index_verify(args)
+        if args.index_command == "query":
+            if args.query_command == "files":
+                return cmd_index_query_files(args)
+            if args.query_command == "elements":
+                return cmd_index_query_elements(args)
+            if args.query_command == "stats":
+                return cmd_index_query_stats(args)
 
     print(f"Unknown command: {args.command}", file=sys.stderr)
     return 1

@@ -1,0 +1,136 @@
+{
+  "_note": "Generated from a non-git copy of the fixture corpus so all fields are deterministic. Excluded: corpus_git_commit, corpus_git_dirty (depend on the environment). Included: generator_version (excluded from golden comparison — varies by install), index_created_at (deterministic via FIXED_NOW), corpus_manifest_sha256/size_bytes (fixed for static fixture), source_files.id (stable, assigned in ascending path order), warnings as {sequence, message} objects. id=2 (METH_W.ln4) has one real warning from path parsing.",
+  "metadata": {
+    "index_format": "structural-index-v1",
+    "schema_version": 1,
+    "generator_name": "peoplenet-process-extractor",
+    "generator_version": "0.1.0",
+    "corpus_id": "index-corpus",
+    "corpus_manifest_sha256": "1502ab8c5b41a2289767833290883e8c2ced0aefd060ac75beaf64fef68ee125",
+    "corpus_manifest_size_bytes": 4053,
+    "corpus_created_at": "2026-06-23T12:00:00+00:00",
+    "index_created_at": "2026-06-23T12:00:00+00:00",
+    "total_files": 7,
+    "structured_files": 4,
+    "unstructured_files": 1,
+    "build_status": "complete"
+  },
+  "source_files": [
+    {
+      "id": 1,
+      "path": "CP/NODE STRUCTURE/OBJ_A/ITEM/CONCEPT/CONC_Y/RULES/CONC_Y#R2#1800_01_01.ln4",
+      "sha256": "59852e2cc81fe4334225dec966c9194aff8ee4352d5ac28df866460f7db7aafa",
+      "size_bytes": 29,
+      "extension": ".ln4",
+      "source_root": "CP",
+      "classification": "structured_ln4",
+      "warning_count": 0,
+      "warnings": []
+    },
+    {
+      "id": 2,
+      "path": "CP/NODE STRUCTURE/OBJ_A/ITEM/METHOD/METH_W/RULES/METH_W.ln4",
+      "sha256": "96cd396518cc200293ac3c49869385f9494d9d10ba258f878922979f4f4a7eb2",
+      "size_bytes": 41,
+      "extension": ".ln4",
+      "source_root": "CP",
+      "classification": "structured_ln4",
+      "warning_count": 1,
+      "warnings": [
+        {
+          "sequence": 0,
+          "message": "Rule file 'METH_W.ln4' has no '#' separators; rule_id and rule_date unavailable."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "path": "CP/NODE STRUCTURE/OBJ_A/ITEM/METHOD/METH_X/RULES/METH_X#R1#2020_01_01.ln4",
+      "sha256": "fe056088d6a2181b48de7cba5f36b50f9d32d48dabebc2e559912df7335164f9",
+      "size_bytes": 28,
+      "extension": ".ln4",
+      "source_root": "CP",
+      "classification": "structured_ln4",
+      "warning_count": 0,
+      "warnings": []
+    },
+    {
+      "id": 4,
+      "path": "GTO/NODE STRUCTURE/OBJ_B/ITEM/VALIDATION/VALID_Z/RULES/VALID_Z#R3#2023_06_15.ln4",
+      "sha256": "9d6353ca3c3b05bb4d4b10080fd2f19719884f313108454e1674f11738c13239",
+      "size_bytes": 33,
+      "extension": ".ln4",
+      "source_root": "GTO",
+      "classification": "structured_ln4",
+      "warning_count": 0,
+      "warnings": []
+    },
+    {
+      "id": 5,
+      "path": "GTO/loose.ln4",
+      "sha256": "5f894b5e43591959acd418676adc169f829f00340e7a55be3a09aa245b728d0b",
+      "size_bytes": 25,
+      "extension": ".ln4",
+      "source_root": "GTO",
+      "classification": "unstructured_ln4",
+      "warning_count": 0,
+      "warnings": []
+    },
+    {
+      "id": 6,
+      "path": "metadata.json",
+      "sha256": "a2a2b6e8b0712bf37e1ecb24393d70912eea01e4fd7c6fee8607f096e0d055f3",
+      "size_bytes": 44,
+      "extension": ".json",
+      "source_root": null,
+      "classification": "metadata_json",
+      "warning_count": 0,
+      "warnings": []
+    },
+    {
+      "id": 7,
+      "path": "small.bin",
+      "sha256": "c73f954a0dcd410afe8d2117ec8a4bef49cf677c60045a5f21acfa2a756ff7d5",
+      "size_bytes": 3,
+      "extension": ".bin",
+      "source_root": null,
+      "classification": "other_supported",
+      "warning_count": 0,
+      "warnings": []
+    }
+  ],
+  "structural_elements": [
+    {
+      "path": "CP/NODE STRUCTURE/OBJ_A/ITEM/CONCEPT/CONC_Y/RULES/CONC_Y#R2#1800_01_01.ln4",
+      "meta4object": "OBJ_A",
+      "item_type": "CONCEPT",
+      "item_name": "CONC_Y",
+      "rule_id": "R2",
+      "rule_date": "1800_01_01"
+    },
+    {
+      "path": "CP/NODE STRUCTURE/OBJ_A/ITEM/METHOD/METH_W/RULES/METH_W.ln4",
+      "meta4object": "OBJ_A",
+      "item_type": "METHOD",
+      "item_name": "METH_W",
+      "rule_id": null,
+      "rule_date": null
+    },
+    {
+      "path": "CP/NODE STRUCTURE/OBJ_A/ITEM/METHOD/METH_X/RULES/METH_X#R1#2020_01_01.ln4",
+      "meta4object": "OBJ_A",
+      "item_type": "METHOD",
+      "item_name": "METH_X",
+      "rule_id": "R1",
+      "rule_date": "2020_01_01"
+    },
+    {
+      "path": "GTO/NODE STRUCTURE/OBJ_B/ITEM/VALIDATION/VALID_Z/RULES/VALID_Z#R3#2023_06_15.ln4",
+      "meta4object": "OBJ_B",
+      "item_type": "VALIDATION",
+      "item_name": "VALID_Z",
+      "rule_id": "R3",
+      "rule_date": "2023_06_15"
+    }
+  ]
+}
