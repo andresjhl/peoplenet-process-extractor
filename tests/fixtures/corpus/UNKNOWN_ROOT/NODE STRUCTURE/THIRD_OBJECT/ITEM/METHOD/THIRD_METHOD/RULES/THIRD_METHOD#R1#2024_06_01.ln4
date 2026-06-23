@@ -1,0 +1,5 @@
+RULE THIRD_METHOD R1 DATE 2024-06-01
+; Fixture file — not real LN4 content — unknown root
+METHOD THIRD_OBJECT.THIRD_METHOD
+  RETURN 2
+END

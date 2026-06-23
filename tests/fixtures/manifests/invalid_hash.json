@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260623-abc12345",
+  "status": "prepared",
+  "scenario": {
+    "path": "inputs/scenario.json",
+    "sha256": "NOTAVALIDHASH",
+    "size_bytes": 1234,
+    "scenario_id": "test-scenario-001",
+    "schema_version": "1.0"
+  },
+  "sources": [],
+  "tools": [],
+  "artifacts": [],
+  "events": [],
+  "warnings": [],
+  "errors": [],
+  "started_at": null,
+  "finished_at": null
+}

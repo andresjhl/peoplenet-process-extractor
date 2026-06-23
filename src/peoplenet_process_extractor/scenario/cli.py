@@ -10,13 +10,7 @@ from .serialization import serialize_report, serialize_scenario
 from .validation import validate
 
 
-def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="peoplenet-process-extractor",
-        description="PeopleNet Process Extractor — Scenario tools",
-    )
-    sub = parser.add_subparsers(dest="command", required=True)
-
+def register_migrate_subparser(sub: argparse._SubParsersAction) -> None:
     mig = sub.add_parser("migrate", help="Migrate a legacy peoplenet_call.json to scenario-v1")
     mig.add_argument("input", help="Path to legacy JSON file")
     mig.add_argument("--output", "-o", required=True, help="Output scenario.json path")
@@ -24,6 +18,21 @@ def build_parser() -> argparse.ArgumentParser:
     mig.add_argument("--scenario-id", dest="scenario_id", help="Override derived scenario ID")
     mig.add_argument("--force", action="store_true", help="Overwrite existing output files")
 
+
+def register_scenario_subparser(sub: argparse._SubParsersAction) -> None:
+    """Register the 'scenario' subcommand group in the top-level CLI."""
+    scenario_parser = sub.add_parser("scenario", help="Scenario tools")
+    scenario_sub = scenario_parser.add_subparsers(dest="scenario_command", required=True)
+    register_migrate_subparser(scenario_sub)
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="peoplenet-process-extractor",
+        description="PeopleNet Process Extractor — Scenario tools",
+    )
+    sub = parser.add_subparsers(dest="command", required=True)
+    register_migrate_subparser(sub)
     return parser
 
 
