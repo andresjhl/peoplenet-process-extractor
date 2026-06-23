@@ -10,7 +10,7 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.scripts]
-peoplenet-process-extractor = "peoplenet_process_extractor.scenario.cli:main"
+peoplenet-process-extractor = "peoplenet_process_extractor.cli:main"
 
 [build-system]
 requires = ["uv_build>=0.9.26,<0.10.0"]

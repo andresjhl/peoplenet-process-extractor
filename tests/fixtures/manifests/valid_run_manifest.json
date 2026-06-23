@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260623-abc12345",
+  "status": "prepared",
+  "scenario": {
+    "path": "inputs/scenario.json",
+    "sha256": "a3f8c1b2d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+    "size_bytes": 1234,
+    "scenario_id": "test-scenario-001",
+    "schema_version": "1.0"
+  },
+  "sources": [
+    {
+      "id": "scenario",
+      "kind": "scenario",
+      "path": "inputs/scenario.json",
+      "sha256": "a3f8c1b2d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+      "size_bytes": 1234,
+      "exists": true,
+      "required": true,
+      "description": "Scenario v1 used for this run"
+    }
+  ],
+  "tools": [
+    {
+      "id": "peoplenet-process-extractor",
+      "name": "peoplenet-process-extractor",
+      "version": "0.1.0",
+      "command": "peoplenet-process-extractor manifest create",
+      "git_commit": null,
+      "schema_info": null
+    }
+  ],
+  "artifacts": [],
+  "events": [
+    {
+      "sequence": 1,
+      "type": "prepared",
+      "timestamp": "2026-06-23T14:30:00Z",
+      "message": "Run 'run-20260623-abc12345' prepared",
+      "reference_id": null
+    }
+  ],
+  "warnings": [],
+  "errors": [],
+  "started_at": null,
+  "finished_at": null
+}
