@@ -5,8 +5,9 @@ reliable specifications for re-implementation in Groovy.
 
 ## Status
 
-**Increment 1 — Scenario contract (`scenario-v1`) implemented.**
+**Increment 2 — Run manifest (`run-manifest-v1`) implemented.**
 
+Increment 1 (`scenario-v1`) is also complete.
 Remaining pipeline phases (discovery, intermediate model, semantic interpretation, rendering)
 are not yet implemented. See [docs/architecture/pipeline-overview.md](docs/architecture/pipeline-overview.md).
 
@@ -25,8 +26,10 @@ uv run ruff check .
 
 ## Migrate a legacy call
 
+Canonical form:
+
 ```bash
-uv run python -m peoplenet_process_extractor.scenario migrate \
+uv run peoplenet-process-extractor scenario migrate \
   path/to/peoplenet_call.json \
   --output scenario.json \
   --report migration-report.json
@@ -39,8 +42,51 @@ Options:
 
 Exit code `0` on success, non-zero on any error.
 
+## Create a run manifest
+
+```bash
+uv run peoplenet-process-extractor manifest create \
+  --scenario scenario.json \
+  --runs-root runs \
+  --run-id run-20260623-001
+```
+
+Options:
+
+- `--run-id ID` — explicit run ID (auto-generated if omitted).
+- `--force` — overwrite an existing *managed* run (valid manifest, matching run_id, no unknown files).
+
+This creates:
+
+```
+runs/run-20260623-001/
+├── run-manifest.json
+├── inputs/scenario.json
+├── artifacts/
+└── reports/
+```
+
+The final directory is always `<runs-root>/<run-id>`. Build happens in a staging directory
+so the previous run is never touched until the new one is fully validated.
+
+Exit code `0` on success, non-zero on any error.
+
+## Verify a run manifest
+
+```bash
+uv run peoplenet-process-extractor manifest verify \
+  runs/run-20260623-001/run-manifest.json
+```
+
+Recomputes SHA-256 hashes and sizes of all registered files and reports discrepancies.
+
+Exit code `0` if everything matches, non-zero on any inconsistency.
+
 ## Documentation
 
 - [Pipeline overview](docs/architecture/pipeline-overview.md)
+- [Run lifecycle](docs/architecture/run-lifecycle.md)
+- [Schema: run-manifest-v1](docs/schemas/run-manifest-v1.md)
 - [Schema: scenario-v1](docs/schemas/scenario-v1.md)
+- [ADR-0002: Run manifest decision](docs/decisions/ADR-0002-run-manifest.md)
 - [ADR-0001: Scenario contract decision](docs/decisions/ADR-0001-scenario-contract.md)
