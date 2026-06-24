@@ -24,6 +24,39 @@ uv run pytest -q
 uv run ruff check .
 ```
 
+
+## External PeopleNet corpus
+
+The real PeopleNet corpus is external to this repository and must be treated as
+read-only. Automated tests use only anonymized fixtures and never require the
+real corpus.
+
+Set the local corpus location in PowerShell:
+
+```powershell
+[Environment]::SetEnvironmentVariable(
+    "PEOPLENET_CORPUS_ROOT",
+    "C:\path\to\peoplenet_src",
+    "User"
+)
+```
+
+Check the variable:
+
+```powershell
+$env:PEOPLENET_CORPUS_ROOT
+Test-Path $env:PEOPLENET_CORPUS_ROOT
+```
+
+Validate the local environment from the repository root:
+
+```powershell
+python scripts/check_local_environment.py
+```
+
+An optional template for machine-local configuration is available at
+`config/local.example.toml`. Do not commit `config/local.toml`.
+
 ## Migrate a legacy call
 
 Canonical form:
@@ -86,7 +119,7 @@ Exit code `0` if everything matches, non-zero on any inconsistency.
 
 ```bash
 uv run peoplenet-process-extractor corpus inventory \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   --output corpus-manifest.json
 ```
 
@@ -102,7 +135,7 @@ Exit code `0` on success, non-zero on any error.
 
 ```bash
 uv run peoplenet-process-extractor corpus verify \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   corpus-manifest.json
 ```
 
@@ -117,7 +150,7 @@ Exit code `0` if the corpus matches the manifest exactly, non-zero on any differ
 
 ```bash
 uv run peoplenet-process-extractor index build \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   --corpus-manifest corpus-manifest.json \
   --output structural-index.sqlite
 ```
@@ -132,7 +165,7 @@ Verifies the corpus against the manifest before building. Exit code `0` on succe
 
 ```bash
 uv run peoplenet-process-extractor index verify \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   --corpus-manifest corpus-manifest.json \
   --database structural-index.sqlite
 ```
@@ -164,7 +197,7 @@ Add `--json` to any query command for machine-readable output.
 
 ```bash
 uv run peoplenet-process-extractor references extract \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   --corpus-manifest corpus-manifest.json \
   --index structural-index.sqlite \
   --output reference-extraction.json
@@ -183,7 +216,7 @@ Two runs with identical inputs and the same `--created-at` value produce byte-id
 
 ```bash
 uv run peoplenet-process-extractor references extract \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   --corpus-manifest corpus-manifest.json \
   --index structural-index.sqlite \
   --output reference-extraction.json \
@@ -200,7 +233,7 @@ Exit code `0` on success, non-zero on any error.
 
 ```bash
 uv run peoplenet-process-extractor references verify \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   --corpus-manifest corpus-manifest.json \
   --index structural-index.sqlite \
   --references reference-extraction.json

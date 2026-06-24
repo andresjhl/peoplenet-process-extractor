@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-SUPPORTED_SCHEMA_VERSIONS: frozenset[str] = frozenset({"1.0"})
+SUPPORTED_SCHEMA_VERSIONS: frozenset[str] = frozenset({"1.0", "1.1"})
 
 
 @dataclass
@@ -12,6 +12,12 @@ class Ln4Structure:
     rule_date: str | None = None
 
 
+@dataclass(frozen=True)
+class M4oStructure:
+    id_t3: str
+    id_node: str | None
+
+
 @dataclass
 class FileEntry:
     path: str
@@ -21,6 +27,7 @@ class FileEntry:
     source_root: str | None
     classification: str
     structure: Ln4Structure | None = None
+    m4o_structure: M4oStructure | None = None
     warnings: list[str] = field(default_factory=list)
 
 

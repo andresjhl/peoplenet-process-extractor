@@ -19,7 +19,7 @@ class TestCreateInventory:
         assert code == 0
         assert output.exists()
         data = json.loads(output.read_text())
-        assert data["schema_version"] == "1.0"
+        assert data["schema_version"] == "1.1"
         assert data["summary"]["total_files"] > 0
 
     def test_no_absolute_paths_in_manifest(self, tmp_path):

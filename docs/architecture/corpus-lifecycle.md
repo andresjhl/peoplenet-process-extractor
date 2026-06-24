@@ -35,7 +35,7 @@ run-manifest-v1.json        ← IMPLEMENTED (Increment 2)
 
 ## Stage 1 — Physical corpus
 
-The corpus lives in an external directory (e.g. `C:\dev\meta4_ai_tools\peoplenet_src`).
+The corpus lives in an external directory configured by `PEOPLENET_CORPUS_ROOT`.
 
 - Not copied into this repository.
 - Not modified by any pipeline step.
@@ -47,7 +47,7 @@ The corpus lives in an external directory (e.g. `C:\dev\meta4_ai_tools\peoplenet
 
 ```bash
 uv run peoplenet-process-extractor corpus inventory \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   --output corpus-manifest.json
 ```
 
@@ -81,7 +81,7 @@ Key invariants:
 
 ```bash
 uv run peoplenet-process-extractor corpus verify \
-  --corpus-root C:\dev\meta4_ai_tools\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   corpus-manifest.json
 ```
 

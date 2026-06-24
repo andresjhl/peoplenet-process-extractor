@@ -106,8 +106,11 @@ def compare_manifests(
 
 
 def _structure_key(entry: FileEntry) -> tuple:
-    """Comparable key for the structure field."""
-    if entry.structure is None:
-        return ()
-    s = entry.structure
-    return (s.meta4object, s.item_type, s.item_name, s.rule_id, s.rule_date)
+    """Comparable key for the structure and m4o_structure fields (mutually exclusive)."""
+    if entry.structure is not None:
+        s = entry.structure
+        return ("ln4", s.meta4object, s.item_type, s.item_name, s.rule_id, s.rule_date)
+    if entry.m4o_structure is not None:
+        m = entry.m4o_structure
+        return ("m4o", m.id_t3, m.id_node)
+    return ()

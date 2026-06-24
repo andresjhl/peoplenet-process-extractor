@@ -18,6 +18,7 @@ from .models import (
     FileEntry,
     GitInfo,
     Ln4Structure,
+    M4oStructure,
     RootInfo,
 )
 from .validation import ValidationError, validate_manifest
@@ -89,6 +90,7 @@ def _file_to_dict(f: FileEntry) -> dict[str, Any]:
         "source_root": f.source_root,
         "classification": f.classification,
         "structure": _structure_to_dict(f.structure),
+        "m4o_structure": _m4o_structure_to_dict(f.m4o_structure),
         "warnings": list(f.warnings),
     }
 
@@ -102,6 +104,15 @@ def _structure_to_dict(s: Ln4Structure | None) -> dict[str, Any] | None:
         "item_name": s.item_name,
         "rule_id": s.rule_id,
         "rule_date": s.rule_date,
+    }
+
+
+def _m4o_structure_to_dict(s: M4oStructure | None) -> dict[str, Any] | None:
+    if s is None:
+        return None
+    return {
+        "id_t3": s.id_t3,
+        "id_node": s.id_node,
     }
 
 
@@ -167,6 +178,9 @@ def _dict_to_file(d: Any) -> FileEntry:
         raise DeserializationError(f"Each file entry must be a JSON object, got {type(d).__name__}.")
     structure_raw = d.get("structure")
     structure = _dict_to_structure(structure_raw) if structure_raw is not None else None
+    # m4o_structure is absent in 1.0 manifests — treat missing as null.
+    m4o_structure_raw = d.get("m4o_structure")
+    m4o_structure = _dict_to_m4o_structure(m4o_structure_raw) if m4o_structure_raw is not None else None
     source_root = d.get("source_root")
     if source_root is not None and not isinstance(source_root, str):
         raise DeserializationError(
@@ -180,6 +194,7 @@ def _dict_to_file(d: Any) -> FileEntry:
         source_root=source_root,
         classification=_require_str(d, "classification"),
         structure=structure,
+        m4o_structure=m4o_structure,
         warnings=_require_list_of_str(d, "warnings"),
     )
 
@@ -202,6 +217,18 @@ def _dict_to_structure(d: Any) -> Ln4Structure:
         rule_id=rule_id,
         rule_date=rule_date,
     )
+
+
+def _dict_to_m4o_structure(d: Any) -> M4oStructure:
+    if not isinstance(d, dict):
+        raise DeserializationError(
+            f"m4o_structure must be a JSON object or null, got {type(d).__name__}."
+        )
+    id_t3 = _require_str(d, "id_t3")
+    id_node = d.get("id_node")
+    if id_node is not None and not isinstance(id_node, str):
+        raise DeserializationError("m4o_structure.id_node must be a string or null.")
+    return M4oStructure(id_t3=id_t3, id_node=id_node)
 
 
 def _dict_to_summary(d: dict[str, Any]) -> CorpusSummary:

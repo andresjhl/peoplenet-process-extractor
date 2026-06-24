@@ -7,11 +7,11 @@
   },
   "created_at": "2026-06-24T12:00:00+00:00",
   "source_manifest": {
-    "sha256": "60050d8d86f667a081d0d7233d739c44de0aac632dc8d1b2a17ecb421ff3220e",
-    "size_bytes": 4512
+    "sha256": "1a1a00d1d94e22c3eeb11f110b15cd7bce080e7f6c8839f1aa4c457720236e0d",
+    "size_bytes": 4715
   },
   "source_index": {
-    "sha256": "02c92f0c7544c6f5af050be54bd9bd55b61f115e3568a7ef944b8abf02558c18",
+    "sha256": "caef1f73b9641d0ef75a0d143c46255a97f1924498bb75534cb92a7cebb2b88d",
     "size_bytes": 61440
   },
   "summary": {

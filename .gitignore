@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 
@@ -32,6 +32,19 @@ Thumbs.db
 *.log
 tmp/
 output/
+
+# Machine-local configuration
+config/local.toml
+
+# External or accidental corpus copies
+/corpus/
+/real-corpus/
+/source-corpus/
+/peoplenet_src/
+
+# Generated local outputs
+/runs/
+/artifacts/
 
 # Local Claude Code configuration
 .claude/

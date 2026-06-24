@@ -3,7 +3,17 @@ from pathlib import Path
 from ..manifest.hashing import compute_file_hash_and_size
 from .enums import Classification
 from .models import CorpusSummary, FileEntry, Ln4Structure
-from .path_parsing import normalize_path, parse_peoplenet_path
+from .path_parsing import normalize_path, parse_m4o_path, parse_peoplenet_path
+
+_M4O_CLASSIFICATIONS: frozenset[str] = frozenset({
+    Classification.M4O_NODE_JSON.value,
+    Classification.M4O_ALIAS_JSON.value,
+    Classification.M4O_MAPPING_JSON.value,
+})
+
+# When the final classification is one of these, M4O warnings from parse_m4o_path are dropped
+# because a higher-priority rule (ignored, ln4, metadata_json) won instead.
+_M4O_DRIVEN_CLASSES: frozenset[str] = _M4O_CLASSIFICATIONS | {Classification.OTHER_SUPPORTED.value}
 
 # Extensions classified as ignored (included in manifest but not analyzed).
 _IGNORED_EXTENSIONS: frozenset[str] = frozenset(
@@ -25,7 +35,8 @@ def classify_file(rel_path: str, structure: Ln4Structure | None) -> Classificati
     2. Extension '.ln4' + structure present → structured_ln4
     3. Extension '.ln4' (no structure) → unstructured_ln4
     4. Filename 'metadata.json' (any location) → metadata_json
-    5. Anything else → other_supported
+    5. m4o_node_json / m4o_alias_json / m4o_mapping_json (via parse_m4o_path)
+    6. other_supported
     """
     parts = normalize_path(rel_path).split("/")
     filename = parts[-1]
@@ -37,7 +48,8 @@ def classify_file(rel_path: str, structure: Ln4Structure | None) -> Classificati
         return Classification.STRUCTURED_LN4 if structure is not None else Classification.UNSTRUCTURED_LN4
     if filename == "metadata.json":
         return Classification.METADATA_JSON
-    return Classification.OTHER_SUPPORTED
+    m4o_cls, _, _ = parse_m4o_path(rel_path)
+    return m4o_cls
 
 
 def build_file_entry(abs_path: Path, rel_path: str) -> FileEntry:
@@ -47,8 +59,19 @@ def build_file_entry(abs_path: Path, rel_path: str) -> FileEntry:
     Raises OSError if the file cannot be read.
     """
     sha256, size_bytes = compute_file_hash_and_size(abs_path)
-    source_root, structure, warnings = parse_peoplenet_path(rel_path)
-    classification = classify_file(rel_path, structure)
+    source_root, ln4_structure, ln4_warnings = parse_peoplenet_path(rel_path)
+    _, m4o_structure, m4o_warnings = parse_m4o_path(rel_path)
+    classification = classify_file(rel_path, ln4_structure)
+
+    # m4o_structure is only kept when the file is actually classified as an M4O resource.
+    if classification.value not in _M4O_CLASSIFICATIONS:
+        m4o_structure = None
+
+    # M4O warnings are only meaningful when the M4O path detection determined the
+    # classification (M4O classes or other_supported from a malformed M4O path).
+    # Drop them when a higher-priority rule (ignored, ln4, metadata_json) won instead.
+    final_m4o_warnings = list(m4o_warnings) if classification.value in _M4O_DRIVEN_CLASSES else []
+
     parts = normalize_path(rel_path).split("/")
     filename = parts[-1]
     ext = ("." + filename.rsplit(".", 1)[-1]).lower() if "." in filename else ""
@@ -60,8 +83,9 @@ def build_file_entry(abs_path: Path, rel_path: str) -> FileEntry:
         extension=ext,
         source_root=source_root,
         classification=classification.value,
-        structure=structure,
-        warnings=warnings,
+        structure=ln4_structure,
+        m4o_structure=m4o_structure,
+        warnings=list(ln4_warnings) + final_m4o_warnings,
     )
 
 

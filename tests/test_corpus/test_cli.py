@@ -56,7 +56,7 @@ class TestCorpusInventoryCli:
         assert code == 0
         assert output.exists()
         data = json.loads(output.read_text())
-        assert data["schema_version"] == "1.0"
+        assert data["schema_version"] == "1.1"
 
     def test_no_overwrite_without_force(self, tmp_path):
         output = tmp_path / "manifest.json"

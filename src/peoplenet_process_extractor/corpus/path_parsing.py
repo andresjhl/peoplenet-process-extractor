@@ -1,4 +1,5 @@
-from .models import Ln4Structure
+from .enums import Classification
+from .models import Ln4Structure, M4oStructure
 
 # Expected path depth for a fully structured PeopleNet LN4 file (number of parts):
 # <source_root> / NODE STRUCTURE / <meta4object> / ITEM / <item_type> / <item_name> / RULES / <rule_file>.ln4
@@ -6,6 +7,15 @@ _STRUCTURED_DEPTH = 8
 _NODE_STRUCTURE = "NODE STRUCTURE"
 _ITEM = "ITEM"
 _RULES = "RULES"
+
+# META4OBJECT sub-pattern labels.
+_META4OBJECT = "META4OBJECT"
+_M4O_NODE = "NODE"
+_M4O_ALIAS = "M4O ALIAS RESOLUTION"
+_M4O_MAPPING = "MAPPING META4OBJECT"
+# Expected depth for M4O file entries (parts count):
+# <source_root> / META4OBJECT / <ID_T3> / <PATTERN> / <ID_NODE_or_ID_T3> / <file>.json
+_M4O_DEPTH = 6
 
 
 def normalize_path(path: str) -> str:
@@ -93,3 +103,99 @@ def parse_peoplenet_path(
         rule_date=rule_date,
     )
     return source_root, structure, warnings
+
+
+def parse_m4o_path(
+    rel_path: str,
+) -> tuple[Classification, M4oStructure | None, list[str]]:
+    """
+    Parse a corpus-relative path for META4OBJECT resource patterns.
+
+    Returns (classification, m4o_structure, warnings):
+    - For non-META4OBJECT paths: (OTHER_SUPPORTED, None, []).
+    - For valid M4O JSON paths: (M4O_*_JSON, M4oStructure, []).
+    - For out-of-scope META4OBJECT paths: (OTHER_SUPPORTED, None, []).
+    - For malformed known-pattern paths with .json extension: (OTHER_SUPPORTED, None, [warning]).
+
+    Warnings use stable codes: malformed_m4o_node_path, malformed_m4o_alias_path,
+    malformed_m4o_mapping_path.
+
+    Non-.json files under META4OBJECT never receive M4O classifications or warnings —
+    they are silently classified as other_supported.
+    """
+    parts = normalize_path(rel_path).split("/")
+
+    # Must have at least source_root/META4OBJECT/...
+    if len(parts) < 2 or parts[1] != _META4OBJECT:
+        return Classification.OTHER_SUPPORTED, None, []
+
+    filename = parts[-1]
+    ext = ("." + filename.rsplit(".", 1)[-1]).lower() if "." in filename else ""
+    is_json = ext == ".json"
+
+    # Need source_root/META4OBJECT/ID_T3/PATTERN/...
+    if len(parts) < 4:
+        return Classification.OTHER_SUPPORTED, None, []
+
+    id_t3 = parts[2]
+    pattern = parts[3]
+
+    if pattern == _M4O_NODE:
+        return _parse_m4o_node(parts, id_t3, is_json, "malformed_m4o_node_path")
+    if pattern == _M4O_ALIAS:
+        return _parse_m4o_node(parts, id_t3, is_json, "malformed_m4o_alias_path",
+                               cls_valid=Classification.M4O_ALIAS_JSON)
+    if pattern == _M4O_MAPPING:
+        return _parse_m4o_mapping(parts, id_t3, is_json)
+
+    # Unknown sub-pattern — out of scope, no warning.
+    return Classification.OTHER_SUPPORTED, None, []
+
+
+def _parse_m4o_node(
+    parts: list[str],
+    id_t3: str,
+    is_json: bool,
+    malformed_code: str,
+    cls_valid: Classification = Classification.M4O_NODE_JSON,
+) -> tuple[Classification, M4oStructure | None, list[str]]:
+    """
+    Shared logic for NODE and M4O ALIAS RESOLUTION patterns.
+
+    Expected depth: source_root / META4OBJECT / ID_T3 / PATTERN / ID_NODE / file.json
+    """
+    if not is_json:
+        return Classification.OTHER_SUPPORTED, None, []
+    if not id_t3.strip():
+        return Classification.OTHER_SUPPORTED, None, [malformed_code]
+    if len(parts) != _M4O_DEPTH:
+        return Classification.OTHER_SUPPORTED, None, [malformed_code]
+    id_node = parts[4]
+    if not id_node.strip():
+        return Classification.OTHER_SUPPORTED, None, [malformed_code]
+    return cls_valid, M4oStructure(id_t3=id_t3, id_node=id_node), []
+
+
+def _parse_m4o_mapping(
+    parts: list[str],
+    id_t3: str,
+    is_json: bool,
+) -> tuple[Classification, M4oStructure | None, list[str]]:
+    """
+    Logic for MAPPING META4OBJECT pattern.
+
+    Expected depth: source_root / META4OBJECT / ID_T3 / MAPPING META4OBJECT / ID_T3 / file.json
+    The inner ID_T3 (parts[4]) must equal the outer ID_T3 (parts[2]).
+    """
+    if not is_json:
+        return Classification.OTHER_SUPPORTED, None, []
+    if not id_t3.strip():
+        return Classification.OTHER_SUPPORTED, None, ["malformed_m4o_mapping_path"]
+    if len(parts) != _M4O_DEPTH:
+        return Classification.OTHER_SUPPORTED, None, ["malformed_m4o_mapping_path"]
+    id_t3_inner = parts[4]
+    if not id_t3_inner.strip():
+        return Classification.OTHER_SUPPORTED, None, ["malformed_m4o_mapping_path"]
+    if id_t3_inner != id_t3:
+        return Classification.OTHER_SUPPORTED, None, ["malformed_m4o_mapping_path"]
+    return Classification.M4O_MAPPING_JSON, M4oStructure(id_t3=id_t3, id_node=None), []

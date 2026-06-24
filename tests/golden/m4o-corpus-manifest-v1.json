@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.1",
+  "corpus_id": "m4o-manifest-corpus",
+  "created_at": "2026-06-24T12:00:00+00:00",
+  "root": {
+    "label": "corpus",
+    "path_policy": "relative"
+  },
+  "git": {
+    "commit": null,
+    "dirty": null
+  },
+  "included_source_roots": [
+    "CP"
+  ],
+  "files": [
+    {
+      "path": "CP/META4OBJECT/OBJ_T3_A/M4O ALIAS RESOLUTION/NODE_X/node_x.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "size_bytes": 2,
+      "extension": ".json",
+      "source_root": "CP",
+      "classification": "m4o_alias_json",
+      "structure": null,
+      "m4o_structure": {
+        "id_t3": "OBJ_T3_A",
+        "id_node": "NODE_X"
+      },
+      "warnings": []
+    },
+    {
+      "path": "CP/META4OBJECT/OBJ_T3_A/MAPPING META4OBJECT/OBJ_T3_A/obj_t3_a.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "size_bytes": 2,
+      "extension": ".json",
+      "source_root": "CP",
+      "classification": "m4o_mapping_json",
+      "structure": null,
+      "m4o_structure": {
+        "id_t3": "OBJ_T3_A",
+        "id_node": null
+      },
+      "warnings": []
+    },
+    {
+      "path": "CP/META4OBJECT/OBJ_T3_A/MAPPING META4OBJECT/OBJ_T3_B/malformed_mapping.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "size_bytes": 2,
+      "extension": ".json",
+      "source_root": "CP",
+      "classification": "other_supported",
+      "structure": null,
+      "m4o_structure": null,
+      "warnings": [
+        "malformed_m4o_mapping_path"
+      ]
+    },
+    {
+      "path": "CP/META4OBJECT/OBJ_T3_A/NODE/NODE_X/node_x.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "size_bytes": 2,
+      "extension": ".json",
+      "source_root": "CP",
+      "classification": "m4o_node_json",
+      "structure": null,
+      "m4o_structure": {
+        "id_t3": "OBJ_T3_A",
+        "id_node": "NODE_X"
+      },
+      "warnings": []
+    },
+    {
+      "path": "CP/META4OBJECT/OBJ_T3_A/NODE/NODE_Y/node_y.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "size_bytes": 2,
+      "extension": ".json",
+      "source_root": "CP",
+      "classification": "m4o_node_json",
+      "structure": null,
+      "m4o_structure": {
+        "id_t3": "OBJ_T3_A",
+        "id_node": "NODE_Y"
+      },
+      "warnings": []
+    },
+    {
+      "path": "CP/META4OBJECT/OBJ_T3_A/OTHER_RESOURCE/OTHER_X/other.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "size_bytes": 2,
+      "extension": ".json",
+      "source_root": "CP",
+      "classification": "other_supported",
+      "structure": null,
+      "m4o_structure": null,
+      "warnings": []
+    },
+    {
+      "path": "CP/META4OBJECT/OBJ_T3_B/NODE/NODE_Z/node_z.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "size_bytes": 2,
+      "extension": ".json",
+      "source_root": "CP",
+      "classification": "m4o_node_json",
+      "structure": null,
+      "m4o_structure": {
+        "id_t3": "OBJ_T3_B",
+        "id_node": "NODE_Z"
+      },
+      "warnings": []
+    }
+  ],
+  "summary": {
+    "total_files": 7,
+    "total_bytes": 14,
+    "structured_files": 0,
+    "unstructured_files": 0,
+    "by_source_root": {
+      "CP": 7
+    },
+    "by_extension": {
+      ".json": 7
+    },
+    "by_classification": {
+      "m4o_alias_json": 1,
+      "m4o_mapping_json": 1,
+      "m4o_node_json": 3,
+      "other_supported": 2
+    }
+  },
+  "warnings": [
+    "Git information unavailable: 'git rev-parse HEAD' failed or git is not installed. corpus.git will be recorded as unknown."
+  ],
+  "errors": []
+}

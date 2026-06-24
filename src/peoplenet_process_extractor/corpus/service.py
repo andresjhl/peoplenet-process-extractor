@@ -114,7 +114,7 @@ def create_inventory(
     summary = build_summary(entries)
 
     manifest = CorpusManifest(
-        schema_version="1.0",
+        schema_version="1.1",
         corpus_id=corpus_id,
         created_at=created_at,
         root=RootInfo(label=corpus_root.name or str(corpus_root)),

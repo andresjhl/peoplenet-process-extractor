@@ -46,12 +46,13 @@ corpus físico
 ## Resultado implementado
 
 - Contrato versionado `corpus-manifest-v1`.
-- Versión de esquema `1.0`.
+- Versión de esquema `1.0` (inicial) → `1.1` desde INC-0006.
 - Inventario determinista de ficheros.
 - Rutas relativas y portables con `/`.
 - Hash SHA-256 y tamaño por fichero.
 - Clasificación cerrada de ficheros.
 - Reconocimiento de rutas PeopleNet estructuradas.
+- Reconocimiento de recursos META4OBJECT (INC-0006).
 - Conservación de ficheros LN4 no estructurados.
 - Descubrimiento y filtrado de raíces de primer nivel.
 - Normalización de filtros duplicados.
@@ -95,6 +96,9 @@ Catálogo cerrado:
 - `structured_ln4`;
 - `unstructured_ln4`;
 - `metadata_json`;
+- `m4o_node_json` _(INC-0006)_;
+- `m4o_alias_json` _(INC-0006)_;
+- `m4o_mapping_json` _(INC-0006)_;
 - `other_supported`;
 - `ignored`.
 
@@ -124,6 +128,95 @@ Cuando la ruta y el nombre encajan, se extraen:
 - `rule_date`.
 
 No se limita `item_type` a `METHOD`; también se admiten `CONCEPT` y otros tipos no vacíos.
+
+## Recursos META4OBJECT reconocidos (INC-0006)
+
+A partir de INC-0006 se reconocen tres patrones bajo `META4OBJECT/`:
+
+### Nodo propio (`m4o_node_json`)
+
+```text
+<source_root>/META4OBJECT/<ID_T3>/NODE/<ID_NODE>/<file>.json
+```
+
+Extrae `M4oStructure(id_t3, id_node)`.
+
+### Alias (`m4o_alias_json`)
+
+```text
+<source_root>/META4OBJECT/<ID_T3>/M4O ALIAS RESOLUTION/<ID_NODE>/<file>.json
+```
+
+Extrae `M4oStructure(id_t3, id_node)`.
+
+### Herencia / Mapping (`m4o_mapping_json`)
+
+```text
+<source_root>/META4OBJECT/<ID_T3>/MAPPING META4OBJECT/<ID_T3>/<file>.json
+```
+
+El `<ID_T3>` exterior e interior deben coincidir. Si no coinciden, el fichero se clasifica como `other_supported` con el warning `malformed_m4o_mapping_path`.
+
+Extrae `M4oStructure(id_t3, id_node=None)`.
+
+### Modelo `M4oStructure`
+
+```python
+@dataclass(frozen=True)
+class M4oStructure:
+    id_t3: str       # Identificador del tipo T3
+    id_node: str | None  # Null para mappings; obligatorio para nodo y alias
+```
+
+El campo `M4oStructure` es complementario a `Ln4Structure`; son mutuamente excluyentes.
+
+### Recursos fuera de alcance
+
+Los subdirectorios desconocidos bajo `META4OBJECT/` se clasifican como `other_supported` sin warning.
+
+El JSON raíz del T3 (`META4OBJECT/<ID_T3>/<file>.json`) es out-of-scope sin warning.
+
+Solo los ficheros con extensión `.json` reciben clasificaciones M4O.
+
+### Política de warnings
+
+Los warnings se emiten únicamente cuando un path parece pertenecer a un patrón conocido pero está mal formado:
+
+| Situación | Código de warning |
+|---|---|
+| `NODE/<file>.json` sin nivel `ID_NODE` | `malformed_m4o_node_path` |
+| `M4O ALIAS RESOLUTION/<file>.json` sin `ID_NODE` | `malformed_m4o_alias_path` |
+| `MAPPING META4OBJECT/<ID_T3_B>` con `ID_T3_B != ID_T3` | `malformed_m4o_mapping_path` |
+
+### Nota INC-0006
+
+INC-0006 no interpreta el contenido de los JSON Meta4Object. Solo inventaría y clasifica recursos a partir de rutas observadas.
+
+No se leen tablas `M4RCH_NODES`, `M4RCH_T3_ALIAS_RES` ni `SPR_DIN_OBJECTS`.
+
+### Serialización
+
+Los manifests `1.1` incluyen en cada `FileEntry`:
+
+```json
+"m4o_structure": {
+  "id_t3": "OBJ_T3_A",
+  "id_node": "NODE_X"
+}
+```
+
+o `null` cuando no aplica.
+
+Los manifests `1.0` sin este campo se leen correctamente con `m4o_structure = null`.
+
+### Compatibilidad de versiones
+
+| Versión | Escritura | Lectura |
+|---|---|---|
+| `1.0` | No (histórico) | Sí |
+| `1.1` | Sí (desde INC-0006) | Sí |
+
+El código anterior puede rechazar `1.1` explícitamente. Eso es aceptable siempre que el error sea claro.
 
 ## Ficheros no estructurados
 
@@ -318,7 +411,7 @@ Los renombrados se representan como fichero eliminado y fichero añadido.
 
 ```bash
 uv run peoplenet-process-extractor corpus inventory \
-  --corpus-root C:\\dev\\meta4_ai_tools\\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   --output corpus-manifest.json
 ```
 
@@ -334,7 +427,7 @@ Opciones principales:
 
 ```bash
 uv run peoplenet-process-extractor corpus verify \
-  --corpus-root C:\\dev\\meta4_ai_tools\\peoplenet_src \
+  --corpus-root $env:PEOPLENET_CORPUS_ROOT \
   corpus-manifest.json
 ```
 
@@ -422,13 +515,14 @@ Esta integración queda documentada, pero no automatizada en este incremento.
 | Criterio | Estado | Evidencia |
 |---|---|---|
 | Contrato `corpus-manifest-v1` | Cumplido | `docs/schemas/corpus-manifest-v1.md` |
-| Versión `1.0` | Cumplido | Modelo y validación |
+| Versión `1.0`/`1.1` | Cumplido | Modelo y validación |
 | Inventario de ficheros relevantes | Cumplido | Servicio de inventario |
 | Hash y tamaño | Cumplido | Tests de hashing |
 | Rutas relativas con `/` | Cumplido | Validación y tests |
 | Sin rutas absolutas | Cumplido | Tests y serialización |
 | Orden determinista | Cumplido | Orden por path |
 | Parsing de estructura PeopleNet | Cumplido | Tests de paths |
+| Recursos META4OBJECT (INC-0006) | Cumplido | Tests de paths y servicio |
 | LN4 no estructurados conservados | Cumplido | Fixtures y tests |
 | Raíces incluidas registradas | Cumplido | `included_source_roots` |
 | Filtros estrictos | Cumplido | Tests de filtro |

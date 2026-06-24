@@ -1,0 +1,3 @@
+[corpus]
+root = "C:/path/to/peoplenet_src"
+read_only = true

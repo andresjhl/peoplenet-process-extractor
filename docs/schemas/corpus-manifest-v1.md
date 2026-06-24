@@ -23,7 +23,15 @@ additions, removals, and modifications.
 
 ## Schema version
 
-Only version `1.0` is supported.  A different value causes an explicit error on load.
+Versions `1.0` and `1.1` are supported for reading.  The generator always writes `1.1`.
+A different value causes an explicit error on load.
+
+Version history:
+
+| Version | Change |
+|---------|--------|
+| 1.0 | Initial release. `FileEntry` has `structure` and `warnings`. |
+| 1.1 | Added `m4o_structure` to `FileEntry` (INC-0006). Three new M4O classifications. |
 
 ---
 
@@ -31,7 +39,7 @@ Only version `1.0` is supported.  A different value causes an explicit error on 
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "corpus_id": "peoplenet-corpus",
   "created_at": "2026-06-23T14:30:00+00:00",
   "root": {
@@ -155,19 +163,25 @@ In the summary's `by_source_root`, `null` source roots use the key `""`.
 
 ### `classification`
 
-| Value             | Meaning                                                          |
-|-------------------|------------------------------------------------------------------|
-| `structured_ln4`  | `.ln4` file whose path fully matches the PeopleNet structure.    |
-| `unstructured_ln4`| `.ln4` file that does not match the known structure.             |
-| `metadata_json`   | File named `metadata.json` at any depth.                         |
-| `other_supported` | Any other file included in the inventory (`.json`, `.bin`, etc.) |
-| `ignored`         | File included in the manifest but excluded from detailed analysis (e.g. `.pyc`, `.db`). |
+Classification is determined in priority order; the first matching rule wins.
+
+| Value             | Priority | Meaning                                                          |
+|-------------------|----------|------------------------------------------------------------------|
+| `ignored`         | 1 (highest) | Extension in the ignore list (`.pyc`, `.db`, etc.). |
+| `structured_ln4`  | 2 | `.ln4` file whose path fully matches the PeopleNet structure.    |
+| `unstructured_ln4`| 3 | `.ln4` file that does not match the known structure.             |
+| `metadata_json`   | 4 | File named `metadata.json` at any depth.                         |
+| `m4o_node_json`   | 5 | Valid `META4OBJECT/ID_T3/NODE/ID_NODE/file.json` path.          |
+| `m4o_alias_json`  | 5 | Valid `META4OBJECT/ID_T3/M4O ALIAS RESOLUTION/ID_NODE/file.json` path. |
+| `m4o_mapping_json`| 5 | Valid `META4OBJECT/ID_T3/MAPPING META4OBJECT/ID_T3/file.json` path. |
+| `other_supported` | 6 (lowest) | Any other inventoried file. Also used for malformed M4O paths (with a warning). |
 
 The classification is deterministic: the same path always produces the same classification.
 
 ### `structure`
 
-Present only for `structured_ln4` files; `null` otherwise.
+Present only for `structured_ln4` files; `null` otherwise.  Mutually exclusive with
+`m4o_structure`.
 
 | Field          | Description                                  |
 |----------------|----------------------------------------------|
@@ -179,6 +193,39 @@ Present only for `structured_ln4` files; `null` otherwise.
 
 When `rule_id` or `rule_date` cannot be extracted (e.g. filename has no `#`), a warning is
 added to the file's `warnings` list and those fields are `null`.
+
+### `m4o_structure`
+
+Present only for `m4o_node_json`, `m4o_alias_json`, and `m4o_mapping_json` files; `null`
+otherwise.  Mutually exclusive with `structure`.
+
+| Field     | Description                                         |
+|-----------|-----------------------------------------------------|
+| `id_t3`   | The `META4OBJECT` object identifier (third component). Non-empty. |
+| `id_node` | Node identifier (fifth component) for NODE and ALIAS patterns. `null` for MAPPING. |
+
+```json
+{
+  "path": "CP/META4OBJECT/OBJ_T3_A/NODE/NODE_X/node_x.json",
+  "classification": "m4o_node_json",
+  "structure": null,
+  "m4o_structure": { "id_t3": "OBJ_T3_A", "id_node": "NODE_X" },
+  "warnings": []
+}
+```
+
+```json
+{
+  "path": "CP/META4OBJECT/OBJ_T3_A/MAPPING META4OBJECT/OBJ_T3_A/obj_t3_a.json",
+  "classification": "m4o_mapping_json",
+  "structure": null,
+  "m4o_structure": { "id_t3": "OBJ_T3_A", "id_node": null },
+  "warnings": []
+}
+```
+
+**Backward compatibility (schema 1.0 → 1.1):** `m4o_structure` is absent in schema 1.0
+manifests.  The deserializer treats a missing `m4o_structure` key as `null`.
 
 ---
 
@@ -204,6 +251,30 @@ A `.ln4` file is classified as `structured_ln4` when its path matches **exactly*
 They are **never discarded**; they appear in `files` with `structure=null`.
 This includes files at the corpus root (`source_root=null`) and files inside source roots
 that do not follow the `NODE STRUCTURE` hierarchy.
+
+---
+
+## META4OBJECT resources (schema 1.1)
+
+Three patterns are recognized under `<source_root>/META4OBJECT/`:
+
+| Pattern | Path | Classification |
+|---------|------|----------------|
+| NODE | `<src>/META4OBJECT/<ID_T3>/NODE/<ID_NODE>/<file>.json` | `m4o_node_json` |
+| M4O ALIAS RESOLUTION | `<src>/META4OBJECT/<ID_T3>/M4O ALIAS RESOLUTION/<ID_NODE>/<file>.json` | `m4o_alias_json` |
+| MAPPING META4OBJECT | `<src>/META4OBJECT/<ID_T3>/MAPPING META4OBJECT/<ID_T3>/<file>.json` | `m4o_mapping_json` |
+
+Rules:
+- Only `.json` files are recognized; all other extensions are `other_supported` with no warning.
+- `ID_T3` and `ID_NODE` must be non-empty (not blank).
+- The inner `ID_T3` in the MAPPING pattern must exactly equal the outer `ID_T3`.
+- Depth must be exactly 6 components for each recognized pattern.
+- Violations of the rules above produce a warning:
+  `malformed_m4o_node_path`, `malformed_m4o_alias_path`, or `malformed_m4o_mapping_path`.
+- Unknown sub-patterns (not NODE, ALIAS, or MAPPING) are silently `other_supported`.
+- M4O warnings are only present when the final classification is `m4o_*` or `other_supported`.
+  If a higher-priority rule wins (e.g. `metadata_json` for `metadata.json`), M4O warnings
+  are suppressed.
 
 ---
 
@@ -311,6 +382,10 @@ corpus root.
 | Non-negative size        | `negative_size`             |
 | Valid classification     | `invalid_classification`    |
 | structure ↔ classification coherence | `missing_structure`, `unexpected_structure` |
+| m4o_structure ↔ classification coherence | `missing_m4o_structure`, `unexpected_m4o_structure` |
+| M4O node/alias has id_node | `missing_id_node_for_m4o_resource` |
+| M4O mapping has no id_node | `mapping_m4o_structure_has_id_node` |
+| m4o_structure.id_t3 non-empty | `empty_m4o_id_t3` |
 | Extension lowercase      | `extension_not_lowercase`   |
 | Extension matches path   | `extension_path_mismatch`   |
 | `source_root` matches path | `source_root_mismatch`    |

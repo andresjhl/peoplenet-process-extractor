@@ -6,6 +6,12 @@ from .enums import Classification
 from .inventory import build_summary
 from .models import CorpusManifest, FileEntry, GitInfo, SUPPORTED_SCHEMA_VERSIONS
 
+_M4O_CLASSES: frozenset[str] = frozenset({
+    Classification.M4O_NODE_JSON.value,
+    Classification.M4O_ALIAS_JSON.value,
+    Classification.M4O_MAPPING_JSON.value,
+})
+
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _VALID_EXTENSION_RE = re.compile(r"^\.[a-z0-9]+$|^$")
 
@@ -267,29 +273,64 @@ def _check_file_entry(
 
 
 def _check_structure_coherence(entry: FileEntry, errors: list[ValidationError]) -> None:
-    """structured_ln4 must have structure; others must not."""
-    if entry.classification == Classification.STRUCTURED_LN4.value:
+    """Validate structure/m4o_structure coherence for all classification types."""
+    cls = entry.classification
+    path = entry.path
+
+    if cls == Classification.STRUCTURED_LN4.value:
         if entry.structure is None:
-            errors.append(
-                ValidationError(
-                    code="missing_structure",
-                    message=(
-                        f"File '{entry.path}' has classification 'structured_ln4' "
-                        "but no structure."
-                    ),
-                )
-            )
+            errors.append(ValidationError(
+                code="missing_structure",
+                message=f"File '{path}' has classification 'structured_ln4' but no structure.",
+            ))
+        if entry.m4o_structure is not None:
+            errors.append(ValidationError(
+                code="unexpected_m4o_structure",
+                message=f"File '{path}' has classification 'structured_ln4' but a non-null m4o_structure.",
+            ))
+
+    elif cls in _M4O_CLASSES:
+        if entry.structure is not None:
+            errors.append(ValidationError(
+                code="unexpected_structure",
+                message=f"File '{path}' has classification '{cls}' but a non-null structure.",
+            ))
+        if entry.m4o_structure is None:
+            errors.append(ValidationError(
+                code="missing_m4o_structure",
+                message=f"File '{path}' has classification '{cls}' but no m4o_structure.",
+            ))
+        else:
+            m = entry.m4o_structure
+            if not m.id_t3 or not m.id_t3.strip():
+                errors.append(ValidationError(
+                    code="empty_m4o_id_t3",
+                    message=f"File '{path}' has an empty id_t3 in m4o_structure.",
+                ))
+            if cls in {Classification.M4O_NODE_JSON.value, Classification.M4O_ALIAS_JSON.value}:
+                if not m.id_node or not m.id_node.strip():
+                    errors.append(ValidationError(
+                        code="missing_id_node_for_m4o_resource",
+                        message=f"File '{path}' has classification '{cls}' but id_node is null or empty.",
+                    ))
+            elif cls == Classification.M4O_MAPPING_JSON.value:
+                if m.id_node is not None:
+                    errors.append(ValidationError(
+                        code="mapping_m4o_structure_has_id_node",
+                        message=f"File '{path}' has classification 'm4o_mapping_json' but id_node is not null.",
+                    ))
+
     else:
         if entry.structure is not None:
-            errors.append(
-                ValidationError(
-                    code="unexpected_structure",
-                    message=(
-                        f"File '{entry.path}' has classification '{entry.classification}' "
-                        "but a non-null structure."
-                    ),
-                )
-            )
+            errors.append(ValidationError(
+                code="unexpected_structure",
+                message=f"File '{path}' has classification '{cls}' but a non-null structure.",
+            ))
+        if entry.m4o_structure is not None:
+            errors.append(ValidationError(
+                code="unexpected_m4o_structure",
+                message=f"File '{path}' has classification '{cls}' but a non-null m4o_structure.",
+            ))
 
 
 def _check_source_root_coherence(
