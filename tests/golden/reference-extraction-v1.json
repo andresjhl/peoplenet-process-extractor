@@ -1,0 +1,661 @@
+{
+  "format": "reference-extraction-v1",
+  "schema_version": 1,
+  "generator": {
+    "name": "peoplenet-process-extractor",
+    "version": "0.1.0"
+  },
+  "created_at": "2026-06-24T12:00:00+00:00",
+  "source_manifest": {
+    "sha256": "60050d8d86f667a081d0d7233d739c44de0aac632dc8d1b2a17ecb421ff3220e",
+    "size_bytes": 4512
+  },
+  "source_index": {
+    "sha256": "02c92f0c7544c6f5af050be54bd9bd55b61f115e3568a7ef944b8abf02558c18",
+    "size_bytes": 61440
+  },
+  "summary": {
+    "files_total": 7,
+    "files_processed": 7,
+    "files_with_calls": 5,
+    "calls_total": 15,
+    "observed": 14,
+    "partially_parsed": 0,
+    "ambiguous": 0,
+    "malformed": 1,
+    "unsupported": 0,
+    "file_errors": 0
+  },
+  "files": [
+    {
+      "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/CONCEPT/CONC_EMPTY/RULES/CONC_EMPTY#R1#1800_01_01.ln4",
+      "source_file_id": 1,
+      "source_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "encoding": "utf-8",
+      "line_ending": "none",
+      "status": "processed",
+      "errors": [],
+      "references": []
+    },
+    {
+      "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+      "source_file_id": 2,
+      "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+      "encoding": "utf-8",
+      "line_ending": "lf",
+      "status": "processed",
+      "errors": [],
+      "references": [
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:157:182",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 157,
+          "end_offset": 182,
+          "line_start": 5,
+          "column_start": 3,
+          "line_end": 5,
+          "column_end": 27,
+          "raw_expression": "Call(nodeA, \"ACTION_ONE\")",
+          "raw_arguments": "nodeA, \"ACTION_ONE\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeA",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"ACTION_ONE\"",
+              "kind": "string_literal",
+              "literal_value": "ACTION_ONE",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:218:244",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 218,
+          "end_offset": 244,
+          "line_start": 7,
+          "column_start": 3,
+          "line_end": 7,
+          "column_end": 28,
+          "raw_expression": "Call (nodeB, \"ACTION_TWO\")",
+          "raw_arguments": "nodeB, \"ACTION_TWO\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeB",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"ACTION_TWO\"",
+              "kind": "string_literal",
+              "literal_value": "ACTION_TWO",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:303:351",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 303,
+          "end_offset": 351,
+          "line_start": 9,
+          "column_start": 13,
+          "line_end": 9,
+          "column_end": 60,
+          "raw_expression": "Call(nodeC, \"VALUE,WITH,COMMAS\", \"ACTION_THREE\")",
+          "raw_arguments": "nodeC, \"VALUE,WITH,COMMAS\", \"ACTION_THREE\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeC",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"VALUE,WITH,COMMAS\"",
+              "kind": "string_literal",
+              "literal_value": "VALUE,WITH,COMMAS",
+              "status": "parsed"
+            },
+            {
+              "position": 2,
+              "raw": " \"ACTION_THREE\"",
+              "kind": "string_literal",
+              "literal_value": "ACTION_THREE",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:394:439",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 394,
+          "end_offset": 439,
+          "line_start": 11,
+          "column_start": 13,
+          "line_end": 11,
+          "column_end": 57,
+          "raw_expression": "Call(nodeD, \"arg(with paren)\", \"ACTION_FOUR\")",
+          "raw_arguments": "nodeD, \"arg(with paren)\", \"ACTION_FOUR\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeD",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"arg(with paren)\"",
+              "kind": "string_literal",
+              "literal_value": "arg(with paren)",
+              "status": "parsed"
+            },
+            {
+              "position": 2,
+              "raw": " \"ACTION_FOUR\"",
+              "kind": "string_literal",
+              "literal_value": "ACTION_FOUR",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:468:527",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 468,
+          "end_offset": 527,
+          "line_start": 13,
+          "column_start": 13,
+          "line_end": 13,
+          "column_end": 71,
+          "raw_expression": "Call(nodeE, OtherFunc(Call(nodeF, \"INNER\")), \"ACTION_FIVE\")",
+          "raw_arguments": "nodeE, OtherFunc(Call(nodeF, \"INNER\")), \"ACTION_FIVE\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeE",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " OtherFunc(Call(nodeF, \"INNER\"))",
+              "kind": "expression",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 2,
+              "raw": " \"ACTION_FIVE\"",
+              "kind": "string_literal",
+              "literal_value": "ACTION_FIVE",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:490:510",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 490,
+          "end_offset": 510,
+          "line_start": 13,
+          "column_start": 35,
+          "line_end": 13,
+          "column_end": 54,
+          "raw_expression": "Call(nodeF, \"INNER\")",
+          "raw_arguments": "nodeF, \"INNER\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeF",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"INNER\"",
+              "kind": "string_literal",
+              "literal_value": "INNER",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:602:622",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 602,
+          "end_offset": 622,
+          "line_start": 15,
+          "column_start": 3,
+          "line_end": 15,
+          "column_end": 22,
+          "raw_expression": "Call(nodeG, \"ACT_G\")",
+          "raw_arguments": "nodeG, \"ACT_G\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeG",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"ACT_G\"",
+              "kind": "string_literal",
+              "literal_value": "ACT_G",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:625:645",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 625,
+          "end_offset": 645,
+          "line_start": 16,
+          "column_start": 3,
+          "line_end": 16,
+          "column_end": 22,
+          "raw_expression": "Call(nodeH, \"ACT_H\")",
+          "raw_arguments": "nodeH, \"ACT_H\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeH",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"ACT_H\"",
+              "kind": "string_literal",
+              "literal_value": "ACT_H",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:793:821",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 793,
+          "end_offset": 821,
+          "line_start": 20,
+          "column_start": 3,
+          "line_end": 20,
+          "column_end": 30,
+          "raw_expression": "Call(nodeI, , \"ACTION_NINE\")",
+          "raw_arguments": "nodeI, , \"ACTION_NINE\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeI",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " ",
+              "kind": "empty",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 2,
+              "raw": " \"ACTION_NINE\"",
+              "kind": "string_literal",
+              "literal_value": "ACTION_NINE",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6:853:890",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 2,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_COMPLEX/RULES/METH_COMPLEX#R1#1800_01_01.ln4",
+          "source_file_sha256": "ff840415590dfa90a610fc590dc68c21259c1de1dc463a150616b27df41bd9e6",
+          "start_offset": 853,
+          "end_offset": 890,
+          "line_start": 22,
+          "column_start": 13,
+          "line_end": 25,
+          "column_end": 3,
+          "raw_expression": "Call(\n    nodeJ,\n    \"ACTION_TEN\"\n  )",
+          "raw_arguments": "\n    nodeJ,\n    \"ACTION_TEN\"\n  ",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "\n    nodeJ",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": "\n    \"ACTION_TEN\"\n  ",
+              "kind": "string_literal",
+              "literal_value": "ACTION_TEN",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        }
+      ]
+    },
+    {
+      "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_MALFORMED/RULES/METH_MALFORMED#R1#1800_01_01.ln4",
+      "source_file_id": 3,
+      "source_file_sha256": "e57167003f74e48f1e1429c29eae6774804c48d1df4bb2c52790cb74a08b0463",
+      "encoding": "utf-8",
+      "line_ending": "lf",
+      "status": "processed",
+      "errors": [],
+      "references": [
+        {
+          "id": "ref:e57167003f74e48f1e1429c29eae6774804c48d1df4bb2c52790cb74a08b0463:113:139",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 3,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_MALFORMED/RULES/METH_MALFORMED#R1#1800_01_01.ln4",
+          "source_file_sha256": "e57167003f74e48f1e1429c29eae6774804c48d1df4bb2c52790cb74a08b0463",
+          "start_offset": 113,
+          "end_offset": 139,
+          "line_start": 4,
+          "column_start": 10,
+          "line_end": 4,
+          "column_end": 35,
+          "raw_expression": "Call(nodeX, \"GOOD_METHOD\")",
+          "raw_arguments": "nodeX, \"GOOD_METHOD\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeX",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"GOOD_METHOD\"",
+              "kind": "string_literal",
+              "literal_value": "GOOD_METHOD",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        },
+        {
+          "id": "ref:e57167003f74e48f1e1429c29eae6774804c48d1df4bb2c52790cb74a08b0463:183:212",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "malformed",
+          "source_file_id": 3,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_MALFORMED/RULES/METH_MALFORMED#R1#1800_01_01.ln4",
+          "source_file_sha256": "e57167003f74e48f1e1429c29eae6774804c48d1df4bb2c52790cb74a08b0463",
+          "start_offset": 183,
+          "end_offset": 212,
+          "line_start": 6,
+          "column_start": 9,
+          "line_end": 7,
+          "column_end": 4,
+          "raw_expression": "Call(nodeY, \"BAD_METHOD\"\nEND\n",
+          "raw_arguments": "nodeY, \"BAD_METHOD\"\nEND\n",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeY",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"BAD_METHOD\"\nEND\n",
+              "kind": "expression",
+              "literal_value": null,
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": [
+            "unclosed_parenthesis"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_NO_CALLS/RULES/METH_NO_CALLS#R1#1800_01_01.ln4",
+      "source_file_id": 4,
+      "source_file_sha256": "1ae081af6cce9350314bd9450a078c936ce34a60bac8252fe1d94e7a8b79bde1",
+      "encoding": "utf-8",
+      "line_ending": "lf",
+      "status": "processed",
+      "errors": [],
+      "references": []
+    },
+    {
+      "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_SIMPLE/RULES/METH_SIMPLE#R1#1800_01_01.ln4",
+      "source_file_id": 5,
+      "source_file_sha256": "109aa1604c3a3c6de798e0805e98515b0e520b2f8996f81118400333e50d36e0",
+      "encoding": "utf-8",
+      "line_ending": "lf",
+      "status": "processed",
+      "errors": [],
+      "references": [
+        {
+          "id": "ref:109aa1604c3a3c6de798e0805e98515b0e520b2f8996f81118400333e50d36e0:112:136",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 5,
+          "path": "CP/NODE STRUCTURE/OBJ_ALPHA/ITEM/METHOD/METH_SIMPLE/RULES/METH_SIMPLE#R1#1800_01_01.ln4",
+          "source_file_sha256": "109aa1604c3a3c6de798e0805e98515b0e520b2f8996f81118400333e50d36e0",
+          "start_offset": 112,
+          "end_offset": 136,
+          "line_start": 4,
+          "column_start": 12,
+          "line_end": 4,
+          "column_end": 35,
+          "raw_expression": "Call(nodeId, \"DO_THING\")",
+          "raw_arguments": "nodeId, \"DO_THING\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "nodeId",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"DO_THING\"",
+              "kind": "string_literal",
+              "literal_value": "DO_THING",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        }
+      ]
+    },
+    {
+      "path": "GTO/NODE STRUCTURE/OBJ_BETA/ITEM/METHOD/METH_BOM/RULES/METH_BOM#R1#1800_01_01.ln4",
+      "source_file_id": 6,
+      "source_file_sha256": "69da91e615725b135a39e1267f6b78501cca6b215f276b84163da405151eadbc",
+      "encoding": "utf-8-bom",
+      "line_ending": "lf",
+      "status": "processed",
+      "errors": [],
+      "references": [
+        {
+          "id": "ref:69da91e615725b135a39e1267f6b78501cca6b215f276b84163da405151eadbc:69:96",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 6,
+          "path": "GTO/NODE STRUCTURE/OBJ_BETA/ITEM/METHOD/METH_BOM/RULES/METH_BOM#R1#1800_01_01.ln4",
+          "source_file_sha256": "69da91e615725b135a39e1267f6b78501cca6b215f276b84163da405151eadbc",
+          "start_offset": 69,
+          "end_offset": 96,
+          "line_start": 3,
+          "column_start": 12,
+          "line_end": 3,
+          "column_end": 38,
+          "raw_expression": "Call(bomNode, \"BOM_ACTION\")",
+          "raw_arguments": "bomNode, \"BOM_ACTION\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "bomNode",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"BOM_ACTION\"",
+              "kind": "string_literal",
+              "literal_value": "BOM_ACTION",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        }
+      ]
+    },
+    {
+      "path": "GTO/NODE STRUCTURE/OBJ_BETA/ITEM/METHOD/METH_CRLF/RULES/METH_CRLF#R1#1800_01_01.ln4",
+      "source_file_id": 7,
+      "source_file_sha256": "e48bb38d4fefcc8b79eb883ddf95423e45dbf1162006919dfa8f0b18770fa5bd",
+      "encoding": "utf-8",
+      "line_ending": "crlf",
+      "status": "processed",
+      "errors": [],
+      "references": [
+        {
+          "id": "ref:e48bb38d4fefcc8b79eb883ddf95423e45dbf1162006919dfa8f0b18770fa5bd:106:135",
+          "kind": "call",
+          "function_name": "Call",
+          "status": "observed",
+          "source_file_id": 7,
+          "path": "GTO/NODE STRUCTURE/OBJ_BETA/ITEM/METHOD/METH_CRLF/RULES/METH_CRLF#R1#1800_01_01.ln4",
+          "source_file_sha256": "e48bb38d4fefcc8b79eb883ddf95423e45dbf1162006919dfa8f0b18770fa5bd",
+          "start_offset": 106,
+          "end_offset": 135,
+          "line_start": 4,
+          "column_start": 12,
+          "line_end": 4,
+          "column_end": 40,
+          "raw_expression": "Call(crlfNode, \"CRLF_ACTION\")",
+          "raw_arguments": "crlfNode, \"CRLF_ACTION\"",
+          "arguments": [
+            {
+              "position": 0,
+              "raw": "crlfNode",
+              "kind": "identifier",
+              "literal_value": null,
+              "status": "parsed"
+            },
+            {
+              "position": 1,
+              "raw": " \"CRLF_ACTION\"",
+              "kind": "string_literal",
+              "literal_value": "CRLF_ACTION",
+              "status": "parsed"
+            }
+          ],
+          "parser_rule": "ln4_call_v1",
+          "diagnostics": []
+        }
+      ]
+    }
+  ]
+}

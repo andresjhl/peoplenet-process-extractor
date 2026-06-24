@@ -1,0 +1,7 @@
+RULE METH_MALFORMED R1 DATE 1800-01-01
+METHOD OBJ_ALPHA.METH_MALFORMED
+  ' This call is properly formed
+  good = Call(nodeX, "GOOD_METHOD")
+  ' This call has no closing paren
+  bad = Call(nodeY, "BAD_METHOD"
+END

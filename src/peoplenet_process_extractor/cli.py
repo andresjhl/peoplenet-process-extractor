@@ -11,6 +11,12 @@ from .index.cli import (
     register_index_subparser,
 )
 from .manifest.cli import cmd_manifest_create, cmd_manifest_verify, register_manifest_subparser
+from .references.cli import (
+    cmd_references_extract,
+    cmd_references_query,
+    cmd_references_verify,
+    register_references_subparser,
+)
 from .scenario.cli import cmd_migrate, register_migrate_subparser, register_scenario_subparser
 
 
@@ -30,6 +36,7 @@ def build_parser() -> argparse.ArgumentParser:
     register_manifest_subparser(sub)
     register_corpus_subparser(sub)
     register_index_subparser(sub)
+    register_references_subparser(sub)
     return parser
 
 
@@ -68,6 +75,14 @@ def main(argv: list[str] | None = None) -> int:
                 return cmd_index_query_elements(args)
             if args.query_command == "stats":
                 return cmd_index_query_stats(args)
+
+    if args.command == "references":
+        if args.references_command == "extract":
+            return cmd_references_extract(args)
+        if args.references_command == "verify":
+            return cmd_references_verify(args)
+        if args.references_command == "query":
+            return cmd_references_query(args)
 
     print(f"Unknown command: {args.command}", file=sys.stderr)
     return 1

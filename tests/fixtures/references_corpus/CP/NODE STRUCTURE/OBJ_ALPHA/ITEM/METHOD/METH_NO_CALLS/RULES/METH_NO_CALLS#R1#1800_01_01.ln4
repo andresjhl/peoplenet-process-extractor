@@ -1,0 +1,6 @@
+RULE METH_NO_CALLS R1 DATE 1800-01-01
+' No Call() expressions here
+METHOD OBJ_ALPHA.METH_NO_CALLS
+  x = 1 + 2
+  RETURN x
+END
