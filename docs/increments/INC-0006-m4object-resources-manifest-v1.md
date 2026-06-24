@@ -150,7 +150,7 @@ Mutuamente exclusivo con `Ln4Structure` en `FileEntry`.
 
 - El reconocimiento de patrones se basa en las rutas observadas en el corpus actual. Si Meta4/PeopleNet introduce subdirectorios adicionales bajo `META4OBJECT/` con nombres distintos, serán clasificados como `other_supported` sin warning hasta que el parser se amplíe.
 - El contenido de los ficheros JSON M4O no se interpreta: el manifiesto registra existencia y metadatos de ruta, no la semántica del recurso. Inconsistencias internas en el JSON son invisibles a este incremento.
-- `structural_elements.meta4object` en el índice estructural conserva su nombre histórico aunque semánticamente contiene `ID_T3`; esta divergencia entre nomenclatura de campo y semántica deberá resolverse de forma coordinada con futuros incrementos.
+- `structural_elements.meta4object` en el índice estructural conserva su nombre histórico aunque semánticamente contiene `ID_TI` (node structure identifier); el nombre del campo es histórico y su semántica real es `node_structure_id`. Esta divergencia entre nomenclatura de campo y semántica deberá resolverse de forma coordinada con futuros incrementos.
 - INC-0007 dependerá de interpretar correctamente los objetos descubiertos aquí (`M4RCH_NODES`, `M4RCH_T3_ALIAS_RES`, `SPR_DIN_OBJECTS` y similares); si los patrones de ruta de esos objetos difieren de los tres reconocidos en este incremento, el parser requerirá extensión.
 - Futuros cambios en la estructura de directorios del corpus (p. ej. anidamiento adicional, renombrado de etiquetas) pueden invalidar las reglas de profundidad fija (`_M4O_DEPTH = 6`) sin error explícito: los ficheros afectados pasarán silenciosamente a `other_supported`.
 

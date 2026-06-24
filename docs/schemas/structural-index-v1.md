@@ -59,7 +59,7 @@ Stores build provenance and aggregate counters.
 |---|---|---|---|
 | `id` | INTEGER | PK | Auto-assigned |
 | `source_file_id` | INTEGER | NOT NULL, UNIQUE, FK→source_files | One element per file maximum |
-| `meta4object` | TEXT | NOT NULL | PeopleNet object name |
+| `meta4object` | TEXT | NOT NULL | Legacy field name; contains the node structure identifier (ID_TI). |
 | `item_type` | TEXT | NOT NULL | e.g. `METHOD`, `CONCEPT`, `VALIDATION` |
 | `item_name` | TEXT | NOT NULL | Name of the item |
 | `rule_id` | TEXT | nullable | e.g. `R1` |
@@ -85,10 +85,10 @@ Stores per-file parse warnings from the manifest. Empty for most files.
 |---|---|---|---|
 | `idx_source_files_classification` | `source_files` | `classification` | Filter by file type |
 | `idx_source_files_source_root` | `source_files` | `source_root` | Filter by source root |
-| `idx_structural_elements_meta4object` | `structural_elements` | `meta4object` | Filter by object name |
+| `idx_structural_elements_meta4object` | `structural_elements` | `meta4object` | Filter by node structure identifier (ID_TI) |
 | `idx_structural_elements_item_type` | `structural_elements` | `item_type` | Filter by item type |
 | `idx_structural_elements_item_name` | `structural_elements` | `item_name` | Filter by item name |
-| `idx_structural_elements_combined` | `structural_elements` | `(meta4object, item_type, item_name)` | Combined object+type+name queries |
+| `idx_structural_elements_combined` | `structural_elements` | `(meta4object, item_type, item_name)` | Combined node structure+type+name queries |
 | `idx_file_warnings_source_file_id` | `file_warnings` | `source_file_id` | Fast lookup of warnings per file |
 
 ---
@@ -164,6 +164,36 @@ structural_elements:
   source_file_id=1  meta4object=OBJ_A  item_type=METHOD  item_name=METH_X
                     rule_id=R1  rule_date=2020_01_01
 ```
+
+---
+
+## Known semantic naming debt
+
+The column `structural_elements.meta4object` was named after the legacy prototype convention.
+Its actual content is the identifier extracted from the third path component of:
+
+```
+<source_root>/NODE STRUCTURE/<ID_TI>/ITEM/<item_type>/<item_name>/RULES/<rule>.ln4
+```
+
+**Status: observed** (in the path parser and corpus inventory implementation).
+
+That identifier is `ID_TI` — the *node structure identifier* — not the Meta4Object name
+(`ID_T3`). The two are distinct concepts in the PeopleNet domain. See
+[peoplenet-structural-model.md](../domain/peoplenet-structural-model.md#critical-distinction-id_node-vs-id_ti).
+
+The field is **not renamed in this schema version** for the following reasons:
+
+- `structural-index-v1` is a versioned contract consumed by `reference-extraction-v1` and
+  other downstream phases. A field rename is a breaking change.
+- The renaming must be coordinated with all consumers and treated as a schema version bump.
+
+**Consumers of `structural_elements.meta4object` must interpret its value as `ID_TI`**
+(node structure identifier), not as `ID_T3` (Meta4Object name). In particular, a `Call()`
+argument must never be compared directly against this column — the argument references
+`ID_NODE`, which requires a separate lookup step to reach `ID_TI`.
+
+A future schema version may rename this column to `node_structure_id` or equivalent.
 
 ---
 
