@@ -1,0 +1,5 @@
+RULE METH_CRLF R1 DATE 1800-01-01
+' Method with CRLF line endings
+METHOD OBJ_BETA.METH_CRLF
+  result = Call(crlfNode, "CRLF_ACTION")
+END

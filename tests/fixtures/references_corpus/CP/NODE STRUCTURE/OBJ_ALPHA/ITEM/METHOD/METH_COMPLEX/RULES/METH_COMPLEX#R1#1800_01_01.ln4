@@ -1,0 +1,33 @@
+RULE METH_COMPLEX R1 DATE 1800-01-01
+' Complex method demonstrating multiple Call() patterns
+METHOD OBJ_ALPHA.METH_COMPLEX
+  ' Simple call on its own line
+  Call(nodeA, "ACTION_ONE")
+  ' Call with space before paren
+  Call (nodeB, "ACTION_TWO")
+  ' Multiple args including string with comma
+  result1 = Call(nodeC, "VALUE,WITH,COMMAS", "ACTION_THREE")
+  ' String with parens inside
+  result2 = Call(nodeD, "arg(with paren)", "ACTION_FOUR")
+  ' Nested Call
+  result3 = Call(nodeE, OtherFunc(Call(nodeF, "INNER")), "ACTION_FIVE")
+  ' Two calls on same line: Call(nodeG, "ACT_G") + Call(nodeH, "ACT_H")
+  Call(nodeG, "ACT_G")
+  Call(nodeH, "ACT_H")
+  ' String containing Call() text - should NOT be extracted from within string
+  msg = "Use Call(obj, method) to invoke"
+  ' Call with empty arg
+  Call(nodeI, , "ACTION_NINE")
+  ' Multiline call
+  result4 = Call(
+    nodeJ,
+    "ACTION_TEN"
+  )
+  ' Block comment containing Call() - should be ignored
+  /* Call(nodeK, "IGNORED") */
+  ' // comment containing Call() - should be ignored
+  // Call(nodeL, "ALSO_IGNORED")
+  ' ' tick comment containing Call() - should be ignored
+  'Call(nodeM, "TICK_IGNORED")
+  RETURN result1
+END

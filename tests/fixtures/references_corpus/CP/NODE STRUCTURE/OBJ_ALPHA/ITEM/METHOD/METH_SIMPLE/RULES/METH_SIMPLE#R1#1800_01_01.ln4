@@ -1,0 +1,6 @@
+RULE METH_SIMPLE R1 DATE 1800-01-01
+' Simple method with a basic Call()
+METHOD OBJ_ALPHA.METH_SIMPLE
+  result = Call(nodeId, "DO_THING")
+  RETURN result
+END

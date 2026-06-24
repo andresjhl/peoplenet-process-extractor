@@ -5,3 +5,10 @@ tests/fixtures/index_corpus/**/*.json text eol=lf
 
 # The golden reference is a JSON file; keep it LF too so diffs are clean.
 tests/golden/*.json text eol=lf
+
+# References corpus: default all .ln4 files to LF.
+tests/fixtures/references_corpus/**/*.ln4 text eol=lf
+
+# Override: CRLF and BOM fixture files must be preserved as binary (no conversion or diff).
+tests/fixtures/references_corpus/**/METH_CRLF*.ln4 binary
+tests/fixtures/references_corpus/**/METH_BOM*.ln4 binary
