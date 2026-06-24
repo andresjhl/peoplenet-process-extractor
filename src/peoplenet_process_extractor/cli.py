@@ -10,6 +10,11 @@ from .index.cli import (
     cmd_index_verify,
     register_index_subparser,
 )
+from .m4oindex.cli import (
+    cmd_m4oindex_build,
+    cmd_m4oindex_verify,
+    register_m4oindex_subparser,
+)
 from .manifest.cli import cmd_manifest_create, cmd_manifest_verify, register_manifest_subparser
 from .references.cli import (
     cmd_references_extract,
@@ -37,6 +42,7 @@ def build_parser() -> argparse.ArgumentParser:
     register_corpus_subparser(sub)
     register_index_subparser(sub)
     register_references_subparser(sub)
+    register_m4oindex_subparser(sub)
     return parser
 
 
@@ -83,6 +89,12 @@ def main(argv: list[str] | None = None) -> int:
             return cmd_references_verify(args)
         if args.references_command == "query":
             return cmd_references_query(args)
+
+    if args.command == "m4object-node-index":
+        if args.m4oindex_command == "build":
+            return cmd_m4oindex_build(args)
+        if args.m4oindex_command == "verify":
+            return cmd_m4oindex_verify(args)
 
     print(f"Unknown command: {args.command}", file=sys.stderr)
     return 1

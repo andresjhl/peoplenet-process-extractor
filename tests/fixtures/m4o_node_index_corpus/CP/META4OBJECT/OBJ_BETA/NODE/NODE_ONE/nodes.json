@@ -1,0 +1,10 @@
+{
+  "M4RCH_NODES": [
+    {
+      "ID_T3": "OBJ_BETA",
+      "ID_NODE": "NODE_ONE",
+      "ID_TI": "NODE_ONE",
+      "IS_ROOT": false
+    }
+  ]
+}

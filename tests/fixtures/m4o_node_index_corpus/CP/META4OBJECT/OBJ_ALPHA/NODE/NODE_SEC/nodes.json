@@ -1,0 +1,16 @@
+{
+  "M4RCH_NODES": [
+    {
+      "ID_T3": "OBJ_ALPHA",
+      "ID_NODE": "NODE_SEC",
+      "ID_TI": "NODE_SEC",
+      "IS_ROOT": 0
+    },
+    {
+      "ID_T3": "OBJ_ALPHA",
+      "ID_NODE": "NODE_ROOT",
+      "ID_TI": "TI_ROOT_STRUCT",
+      "IS_ROOT": true
+    }
+  ]
+}

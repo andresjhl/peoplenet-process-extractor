@@ -1,0 +1,135 @@
+{
+  "format": "m4object-node-index-v1",
+  "schema_version": 1,
+  "generator": {
+    "name": "peoplenet-process-extractor",
+    "version": "0.1.0"
+  },
+  "created_at": "2026-06-24T12:00:00+00:00",
+  "source_manifest": {
+    "corpus_id": "node-index-corpus",
+    "corpus_schema_version": "1.1",
+    "sha256": "be386e9b123cdcf94ce5d13714362cea509e4fe5f9eaab6e76418526fa4a6db5",
+    "size_bytes": 2950
+  },
+  "node_bindings": [
+    {
+      "owner_id_t3": "OBJ_ALPHA",
+      "path_id_node": "NODE_ROOT",
+      "content_id_t3": "OBJ_ALPHA",
+      "content_id_node": "NODE_ROOT",
+      "id_ti": "TI_ROOT_STRUCT",
+      "is_root": true,
+      "evidence": {
+        "path": "CP/META4OBJECT/OBJ_ALPHA/NODE/NODE_ROOT/nodes_root.json",
+        "sha256": "a1e834165258f53f758d6be274ee9f227f6285782bd71e84491d1ff6546b04b9",
+        "classification": "m4o_node_json",
+        "table": "M4RCH_NODES",
+        "row_index": 0
+      }
+    },
+    {
+      "owner_id_t3": "OBJ_ALPHA",
+      "path_id_node": "NODE_SEC",
+      "content_id_t3": "OBJ_ALPHA",
+      "content_id_node": "NODE_ROOT",
+      "id_ti": "TI_ROOT_STRUCT",
+      "is_root": true,
+      "evidence": {
+        "path": "CP/META4OBJECT/OBJ_ALPHA/NODE/NODE_SEC/nodes.json",
+        "sha256": "77920b0ee7e18d72aa22611b05758645858d709bcd84aaa7764c9a2940e24d85",
+        "classification": "m4o_node_json",
+        "table": "M4RCH_NODES",
+        "row_index": 1
+      }
+    },
+    {
+      "owner_id_t3": "OBJ_ALPHA",
+      "path_id_node": "NODE_SEC",
+      "content_id_t3": "OBJ_ALPHA",
+      "content_id_node": "NODE_SEC",
+      "id_ti": "NODE_SEC",
+      "is_root": false,
+      "evidence": {
+        "path": "CP/META4OBJECT/OBJ_ALPHA/NODE/NODE_SEC/nodes.json",
+        "sha256": "77920b0ee7e18d72aa22611b05758645858d709bcd84aaa7764c9a2940e24d85",
+        "classification": "m4o_node_json",
+        "table": "M4RCH_NODES",
+        "row_index": 0
+      }
+    },
+    {
+      "owner_id_t3": "OBJ_BETA",
+      "path_id_node": "NODE_ONE",
+      "content_id_t3": "OBJ_BETA",
+      "content_id_node": "NODE_ONE",
+      "id_ti": "NODE_ONE",
+      "is_root": false,
+      "evidence": {
+        "path": "CP/META4OBJECT/OBJ_BETA/NODE/NODE_ONE/nodes.json",
+        "sha256": "b1446a214581427f300c0fd91fe178a174f9da78f41f750d633038482a7fa5dc",
+        "classification": "m4o_node_json",
+        "table": "M4RCH_NODES",
+        "row_index": 0
+      }
+    }
+  ],
+  "alias_bindings": [
+    {
+      "owner_id_t3": "OBJ_ALPHA",
+      "path_node_reference": "NODE_SEC",
+      "alias": "ALIAS_X",
+      "id_node": "NODE_SEC",
+      "id_ti": "NODE_SEC",
+      "id_alias_t3": "OBJ_ALPHA",
+      "evidence": {
+        "path": "CP/META4OBJECT/OBJ_ALPHA/M4O ALIAS RESOLUTION/NODE_SEC/aliases.json",
+        "sha256": "9dfe297e9742a4ceb32c9ec1a860d4a23a58fa291252e9ee2b52b29d0310771f",
+        "classification": "m4o_alias_json",
+        "table": "M4RCH_T3_ALIAS_RES",
+        "row_index": 0
+      }
+    }
+  ],
+  "inheritance_edges": [
+    {
+      "owner_id_t3": "OBJ_ALPHA",
+      "base_id_t3": "OBJ_BASE",
+      "derived_id_t3": "OBJ_ALPHA",
+      "evidence": {
+        "path": "CP/META4OBJECT/OBJ_ALPHA/MAPPING META4OBJECT/OBJ_ALPHA/mapping.json",
+        "sha256": "722baca09ad818c6e7e44074db51d4b249b94f72c15742d886050eac8342c827",
+        "classification": "m4o_mapping_json",
+        "table": "SPR_DIN_OBJECTS",
+        "row_index": 0
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "duplicate_node_binding",
+      "severity": "warning",
+      "path": "CP/META4OBJECT/OBJ_ALPHA/NODE/NODE_SEC/nodes.json",
+      "table": "M4RCH_NODES",
+      "row_index": 1,
+      "message": "NodeBinding ('OBJ_ALPHA', 'NODE_ROOT'): duplicate at row 1 (reference at CP/META4OBJECT/OBJ_ALPHA/NODE/NODE_ROOT/nodes_root.json:0)."
+    },
+    {
+      "code": "id_node_mismatch",
+      "severity": "warning",
+      "path": "CP/META4OBJECT/OBJ_ALPHA/NODE/NODE_SEC/nodes.json",
+      "table": "M4RCH_NODES",
+      "row_index": 1,
+      "message": "Row 1: path path_id_node='NODE_SEC' differs from content ID_NODE='NODE_ROOT'."
+    }
+  ],
+  "summary": {
+    "selected_file_count": 5,
+    "successfully_parsed_file_count": 5,
+    "failed_file_count": 0,
+    "node_binding_count": 4,
+    "alias_binding_count": 1,
+    "inheritance_edge_count": 1,
+    "diagnostic_count": 2
+  }
+}
