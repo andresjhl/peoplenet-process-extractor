@@ -2,7 +2,7 @@
 
 ## Estado
 
-**En curso** (rama `feat/reference-extraction-v1` pendiente de integración)
+**Cerrado** (rama `feat/reference-extraction-v1` pendiente de integración)
 
 ## Identificación
 
@@ -10,7 +10,7 @@
 - **Nombre:** `reference-extraction-v1`
 - **Rama de implementación:** `feat/reference-extraction-v1`
 - **Repositorio:** `peoplenet-process-extractor`
-- **Resultado:** implementado y validado; pendiente de integración en `main`
+- **Resultado:** Integrado en `main`
 
 ---
 
